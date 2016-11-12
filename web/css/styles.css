@@ -1,0 +1,448 @@
+/* Copyright 2016 - QuickList S.A */
+
+/* Autores: Corazza Martín - Ramírez Jeremías - Sabán Aaron - Torres Agustín */
+
+/* General */
+@font-face {
+    font-family: 'Raleway-Bold';
+    src: url('../fonts/Raleway/Raleway-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway-Thin';
+    src: url('../fonts/Raleway/Raleway-Thin.ttf');
+}
+
+@font-face {
+    font-family: 'Raleway-LightItalic';
+    src: url('../fonts/Raleway/Raleway-LightItalic.ttf');
+}
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor {
+    font-family: 'Raleway-Thin';
+}
+
+.cabecera {
+    top: 0;
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-sizing: border-box;
+    z-index: 200;
+    -webkit-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 0px 0px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.2);
+}
+
+.cuerpo {
+    margin-top: 50px;
+    position: absolute;
+    width: 100%;
+}
+
+/* Menú principal */
+
+.menu {
+    max-width: 1200px;
+    width: 100%;
+    height: 50px;
+    margin: 0 auto;
+    z-index: 0;
+}
+
+.menu nav{
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Oculto el menú hasta que se achique la pantalla */
+.menu_bar{
+    display: none;
+}
+
+.menu nav ul{
+    overflow: hidden;
+    list-style: none;
+}
+
+.menu nav ul li{
+    float: left;
+}
+
+.menu nav ul li a {
+    color: #9b9b9b;
+    display: block;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 900;
+    padding: 16px;
+}
+
+.menu ul li span{
+    margin-right: 10px;
+}
+
+.menu nav ul li a:hover{
+    color: #4f2da6;
+}
+
+.menu nav ul li h4{
+    padding: 16px;
+    font-weight: bold;
+    float: right;
+}
+
+.menu nav ul li img{
+    margin: 0; 
+    padding: 10px 0 0 0;
+}
+
+/***** Cuerpo *****/
+
+.row_1 {
+    width: 100%;
+    position: relative;
+    height: 537px;
+    background-color: #CED3DC;
+}
+
+.row_1 .col_11{
+    width: 40%;
+    margin-right: 10%;
+    float: right;
+    overflow: hidden;
+    background-color: #CED3DC;
+}
+
+.row_1 .col_11 h2{
+    font-size: 28px;
+    font-weight: 600;
+    color: #000;
+    text-align: center;
+    padding-top: 180px;
+}
+
+.row_1 .col_12 {
+    width: 30%;
+    margin-left: 20%;
+    float: left;
+    overflow: hidden;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    background-color: #CED3DC;
+}
+
+.row_1 .col_11 .download_button {
+    width: 184px;
+    height: 42px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+.row_1 .col_11 .download_button a {
+    padding: 20px;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #4f2da6;
+    color: #FAFAFA;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.row_1 .col_11 .download_button a:hover {
+    background-color: #5c449b;
+}
+
+.row_2 {
+    width: 100%;
+    height: 420px; /* ;) */
+}
+
+.row_2 .col_21{
+    float: left;
+    width: 30%;
+    margin-left: 19%;
+    margin-right: 1%;
+    font-size: 18px;
+    padding-top: 80px;
+}
+
+.row_2 .col_21 h2{
+    text-align: center;
+    font-size: 24px;
+    padding-top: 20px;
+    color: #000;
+}
+
+.row_2 .col_22{
+    float: right;
+    width: 30%;
+    margin-left: 1%;
+    margin-right: 19%;
+    font-size: 18px;
+    padding-top: 80px;
+}
+
+.row_2 .col_22 h2{
+    text-align: center;
+    font-size: 24px;
+    padding-top: 20px;
+    color: #000;
+}
+
+.row_2 .col_23 {
+    width: 65%;
+    height: 50px;
+    margin: 0 auto;
+    padding-top: 70px;
+}
+
+.row_2 .col_23 h2 {
+    text-align: center;
+    font-size: 44px;
+    color: #000;
+}
+
+.row_2 .col_23 h4 {
+    text-align: center;
+    font-size: 20px;
+    color: #525252;
+}
+
+.texto_info {
+    text-align: center;
+    padding: 10px 50px 0px 50px;
+    box-sizing: border-box;
+    font-size: 16px;
+    font-weight: 600;
+    color: #777;
+}
+
+.row_3 {
+    width: 100%;
+    height: 300px;
+    background-color: #EE6C4D;
+}
+
+/***** Footer *****/
+
+.pie {
+    width: 100%;
+    height: 50px;
+    background-color: #FAFAFA;
+}
+
+.pie .copy {
+    width: 200px;
+    height: 40px;
+    float: left;
+}
+
+.pie .copy h4 {
+    padding-top: 16px; 
+    padding-left: 10px;
+    font-size: 14px;
+    font-weight: bolder;
+}
+
+/* Código responsive */
+
+/* Pantallas pequeñas (netbooks) */
+@media screen and (max-width: 1150px){
+    
+    .cabecera{
+        
+    }
+    
+    .row_1 {
+        height: 825px;
+    }
+    
+    .row_1 .col_12 {
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    .row_1 .col_11{
+        width: 100%;
+        margin-right: 0;
+        margin-top: 80px;
+    }
+    
+    .row_1 .col_11 h2{
+        margin: 0 0 0 0;
+        padding: 0;
+    }
+    
+    .row_2 .col_21{
+        width: 100%;
+        margin: 0;
+    }
+    
+    .row_2 .col_22{
+        width: 100%;
+        margin: 0;
+    }
+    
+    .pie {
+        top: 1400px;
+    }
+}
+
+/* Smartphones */
+@media screen and (max-width: 640px){
+    
+    .menu nav{
+        position: absolute;
+        width: 80%;
+        margin: 51px 0 0 0;
+        left: -100%;
+        font-size: 42px;
+        z-index: 3;
+        background-color: rgba(255,255,255,1);
+    }
+    
+    .menu nav ul li{
+        display: block;
+        float: none;
+    }
+    
+    .menu nav ul li h4{
+        display: none;
+    }
+    
+    .menu_bar{
+        display: block;
+        width: 100%;
+    }
+    
+    .menu_bar span{
+        float: right;
+        padding: 7px 7px 0 0;
+    }
+    
+    .menu_bar a{
+        font-size: 34px;
+        font-weight: lighter;
+        color: #2D2D2D;
+    }
+    
+    .row_1 .col_11 h2{
+        font-size: 22px;
+        font-weight: 600;
+        vertical-align: middle;
+    }
+    
+    .row_2 .col_23 {
+        padding-bottom: 70px;
+        font-size: 28px;
+    }
+    
+    .row_2 .col_21 {
+        padding-top: 0px;    
+    }
+    
+    .row_2 .col_22 {
+        padding-top: 10px;
+        padding-bottom: 20px;    
+    }
+    
+    .row_2 .col_21 h2{
+        font-size: 18px;
+    }
+    
+    .row_2 .col_22 h2{
+        font-size: 18px;
+    }
+    
+    .row_2 .col_23 h2{
+        font-size: 26px;
+    }
+    
+    .row_2 .col_23 h4{
+        padding-top: 20px;
+        font-size: 14px;
+    }
+    
+    .texto_info {
+        font-size: 14px;
+    }
+    
+    .pie {
+        top: 1655px;
+    }
+    
+    .pie .copy{
+        float: none;
+        margin: 0 auto;
+    }
+    
+    .row_3 {
+        margin-top: 60px;
+    }
+    
+}
+
+/* Todo lo referido a formularios */
+.formulario {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
+select option{
+    color: #000;
+    font-weight: bold;
+}
+
+.entrada_form {
+    font-family: 'Raleway-Thin';
+    width: 600px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    font-weight: bold;
+    color: #000;
+}
+
+.input_left {
+    width: 297px; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    box-sizing: border-box; 
+    font-weight: bold; 
+    color: #000; 
+    float: left; 
+    margin-right: 6px;
+    font-family: 'Raleway-Thin';
+}
+
+.input_right {
+    width: 297px; 
+    padding: 10px; 
+    margin-bottom: 10px; 
+    box-sizing: border-box; 
+    font-weight: bold; 
+    color: #000; 
+    float: right;
+    font-family: 'Raleway-Thin';
+}
+
+.msg_error {
+    color: red;
+    font-weight: bold;
+    font-family: 'Raleway-Thin';
+}
+
+.msg_correcto {
+    color: green;
+    font-weight: bold;
+    font-family: 'Raleway-Thin';
+}

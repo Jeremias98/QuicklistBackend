@@ -61,6 +61,8 @@ public class Alta extends MasterDatabase {
     // Método para guardar la asistencia tomada
     public void guardarAsistencia(String id_alumno, String id_grupo, Date fecha, String asistencia, String id_cuenta) {
         
+        
+        
     }
     
     // Método para registrar un usuario

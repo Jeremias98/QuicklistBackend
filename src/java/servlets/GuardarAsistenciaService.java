@@ -50,8 +50,6 @@ public class GuardarAsistenciaService extends HttpServlet {
             
             db.conectar();
             
-            
-            
             mainJo.put("id_alumnos", "");
             
             db.desconectar();

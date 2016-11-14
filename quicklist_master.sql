@@ -114,6 +114,11 @@ CREATE TABLE `GRUPO` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+LOCK TABLES `GRUPO` WRITE;
+/*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
+INSERT INTO `GRUPO` VALUES (1,'1ro 1ra',0),(2,'1ro 2da',0),(3,'1ro 3ra',0),(4,'1ro 4ta',0),(5,'1ro 5ta',0),(6,'1ro 6ta',0),(7,'1ro 7ma',0),(8,'1ro 8va',0),(9,'1ro 9na',0),(10,'1ro 10ma',0),(11,'2do 1ra',0),(12,'2do 2da',0),(13,'2do 3ra',0),(14,'2do 4ta',0),(15,'2do 5ta',0),(16,'2do 6ta',0),(17,'2do 7ma',0),(18,'2do 8va',0),(19,'2do 9na',0),(20,'2do 10ma',0),(21,'3ro 1ra',0),(22,'3ro 2da',0),(23,'3ro 3ra',0),(24,'3ro 4ta',0),(25,'3ro 5ta',0),(26,'3ro 6ta',0),(27,'3ro 7ma',0),(28,'3ro 8va',0),(29,'3ro 9na',0),(30,'3ro 10ma',0),(31,'4to 1ra',0),(32,'4to 2da',0),(33,'4to 3ra',0),(34,'4to 4ta',0),(35,'4to 5ta',0),(36,'4to 6ta',0),(37,'4to 7ma',0),(38,'4to 8va',0),(39,'4to 9na',0),(40,'4to 10ma',0),(41,'5to 1ra',0),(42,'5to 2da',0),(43,'5to 3ra',0),(44,'5to 4ta',0),(45,'5to 5ta',0),(46,'5to 6ta',0),(47,'5to 7ma',0),(48,'5to 8va',0),(49,'5to 9na',0),(50,'5to 10ma',0),(51,'6to 1ra',0),(52,'6to 2da',0),(53,'6to 3ra',0),(54,'6to 4ta',0),(55,'6to 5ta',0),(56,'6to 6ta',0),(57,'6to 7ma',0),(58,'6to 8va',0),(59,'6to 9na',0),(60,'6to 10ma',0),(61,'7mo 1ra',0),(62,'7mo 2da',0),(63,'7mo 3ra',0),(64,'7mo 4ta',0),(65,'7mo 5ta',0),(66,'7mo 6ta',0),(67,'7mo 7ma',0),(68,'7mo 8va',0),(69,'7mo 9na',0),(70,'7mo 10ma',0);
+/*!40000 ALTER TABLE `GRUPO` ENABLE KEYS */;
+UNLOCK TABLES;
 --
 -- Table structure for table `grupo_alumno`
 --
@@ -129,6 +134,38 @@ CREATE TABLE `GRUPO_ALUMNO` (
   KEY `ALUMNO_ID` (`ALUMNO_ID`),
   CONSTRAINT `GRUPO_ALUMNO_ibfk_1` FOREIGN KEY (`GRUPO_ID`) REFERENCES `GRUPO` (`GRUPO_ID`),
   CONSTRAINT `GRUPO_ALUMNO_ibfk_2` FOREIGN KEY (`ALUMNO_ID`) REFERENCES `ALUMNO` (`ALUMNO_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `TIPO_ASISTENCIA`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `TIPO_ASISTENCIA` (
+  `TIPO_ASISTENCIA_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPCION` varchar(60) NOT NULL,
+  PRIMARY KEY (`TIPO_ASISTENCIA_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+LOCK TABLES `TIPO_ASISTENCIA` WRITE;
+/*!40000 ALTER TABLE `TIPO_ASISTENCIA` DISABLE KEYS */;
+INSERT INTO `TIPO_ASISTENCIA` VALUES(1, 'PRESENTE');
+INSERT INTO `TIPO_ASISTENCIA` VALUES(2, 'AUSENTE');
+INSERT INTO `TIPO_ASISTENCIA` VALUES(3, 'TARDE');
+/*!40000 ALTER TABLE `TIPO_ASISTENCIA` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `ASISTENCIA_TIPO`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ASISTENCIA_TIPO` (
+  `ASISTENCIA_TIPO_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ASISTENCIA_ID` int(11) NOT NULL,
+  `TIPO_ASISTENCIA_ID` int(11) NOT NULL,
+  PRIMARY KEY (`ASISTENCIA_TIPO_ID`,`ASISTENCIA_ID`,`TIPO_ASISTENCIA_ID`),
+  KEY `TIPO_ASISTENCIA_ID` (`TIPO_ASISTENCIA_ID`),
+  CONSTRAINT `ASISTENCIA_TIPO_ibfk_1` FOREIGN KEY (`ASISTENCIA_ID`) REFERENCES `ASISTENCIA` (`ASISTENCIA_ID`),
+  CONSTRAINT `ASISTENCIA_TIPO_ibfk_2` FOREIGN KEY (`TIPO_ASISTENCIA_ID`) REFERENCES `TIPO_ASISTENCIA` (`TIPO_ASISTENCIA_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 

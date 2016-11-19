@@ -9,6 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -202,6 +206,7 @@ public class Querys extends MasterDatabase {
     
     // Retorna el nombre del alumno por la id dada
     public String getNombreAlumnoById(int id) throws SQLException {
+        
         ResultSet rs = super.consultar("SELECT * FROM ALUMNO WHERE ALUMNO_ID='"+id+"'");
         String res = null;
         if (rs.next()) {
@@ -209,5 +214,78 @@ public class Querys extends MasterDatabase {
         }
         return res;
     }
+    
+    public Integer getCantidadDeAlumnos(Integer id_grupo) throws SQLException {
+        
+        Integer cant = 0;
+        
+        ResultSet rs = super.consultar("SELECT *, COUNT(*) AS CANT_ALUMNOS FROM GRUPO_ALUMNO WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        if(rs.next()) {
+            cant = rs.getInt("CANT_ALUMNOS");
+        }
+        
+        return cant;
+    }
+    
+    public List<Integer> revisarAusencias(Integer id_grupo) throws SQLException {
+        
+        //ResultSet rs = super.consultar("SELECT * FROM ASISTENCIA ORDER BY DESC WHERE GRUPO_ID = '"+id_grupo+"' GROUP BY FECHA LIMIT 3");
+        ResultSet rs = super.consultar("SELECT * FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA_ID DESC LIMIT "+getCantidadDeAlumnos(id_grupo) * 3);
+        
+        List<Integer> list = new ArrayList<Integer>();
+        List<Integer> ret = new ArrayList<Integer>();
+        
+        while (rs.next()) {
+            
+            if (rs.getInt("ASISTENCIA") == 2) {
+                list.add(rs.getInt("ALUMNO_ID"));
+            }
+            
+        }
+        
+        Set<Integer> quipu = new HashSet<Integer>(list);
+        for (Integer i : quipu) {
+            
+            if (Collections.frequency(list, i) >= 3) {
+                ret.add(i);
+            }
+            
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un array con el nombre de los grupos por fecha
+    public ArrayList<String> getNameGruposPorFecha(String fecha) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT GRUPO_ID FROM ASISTENCIA WHERE FECHA='"+fecha+"' GROUP BY GRUPO_ID");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(getGrupoById(rs.getInt("GRUPO_ID")));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el id de los grupos por la fecha
+    public ArrayList<Integer> getIdGruposPorFecha(String fecha) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT GRUPO_ID FROM ASISTENCIA WHERE FECHA='"+fecha+"' GROUP BY GRUPO_ID");
+        
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        while (rs.next()) {
+            list.add(rs.getInt("GRUPO_ID"));
+        }
+        
+        return list;
+        
+    }
+    
     
 }

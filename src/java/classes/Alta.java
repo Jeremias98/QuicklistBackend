@@ -59,10 +59,9 @@ public class Alta extends MasterDatabase {
     }
      
     // Método para guardar la asistencia tomada
-    public void guardarAsistencia(String id_alumno, String id_grupo, Date fecha, String asistencia, String id_cuenta) {
+    public void guardarAsistencia(Integer id_alumno, Integer id_grupo, String fecha, Integer asistencia, Integer id_cuenta) throws SQLException {
         
-        String sql = "INSERT INTO ";
-        
+        super.guardar("INSERT INTO ASISTENCIA(ALUMNO_ID, GRUPO_ID, ASISTENCIA, CUENTA_ID, FECHA) VALUES('"+id_alumno+"', '"+id_grupo+"', '"+asistencia+"', '"+id_cuenta+"', '"+fecha+"')");
     }
     
     // Método para registrar un usuario

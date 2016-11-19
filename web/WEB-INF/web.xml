@@ -36,6 +36,14 @@
         <servlet-name>GuardarAsistenciaService</servlet-name>
         <servlet-class>servlets.GuardarAsistenciaService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RevisarAsistenciaService</servlet-name>
+        <servlet-class>servlets.RevisarAsistenciaService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BuscarCursosService</servlet-name>
+        <servlet-class>servlets.BuscarCursosService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AgregarGrupoService</servlet-name>
         <url-pattern>/AgregarGrupoService</url-pattern>
@@ -71,6 +79,14 @@
     <servlet-mapping>
         <servlet-name>GuardarAsistenciaService</servlet-name>
         <url-pattern>/GuardarAsistenciaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RevisarAsistenciaService</servlet-name>
+        <url-pattern>/RevisarAsistenciaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BuscarCursosService</servlet-name>
+        <url-pattern>/BuscarCursosService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

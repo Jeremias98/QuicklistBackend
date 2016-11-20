@@ -287,5 +287,49 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Retorna un string con el telefono del alumno
+    public String getTelefonoById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT TELEFONO FROM ALUMNO WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("TELEFONO");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con el celular del alumno
+    public String getCelularById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT CELULAR FROM ALUMNO WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("CELULAR");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con el email del alumno
+    public String getEmailById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT EMAIL FROM ALUMNO WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("EMAIL");
+        }
+        
+        return ret;
+        
+    }
     
 }

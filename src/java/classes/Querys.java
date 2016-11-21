@@ -177,12 +177,12 @@ public class Querys extends MasterDatabase {
     // Retorna un array con el nombre de los alumnos segun el curso
     public ArrayList<String> getNombreAlumnosByGrupo(Integer id_grupo) throws SQLException {
         
-        ResultSet rs = super.consultar("SELECT * FROM GRUPO_ALUMNO WHERE GRUPO_ID='"+id_grupo+"'");
+        ResultSet rs = super.consultar("SELECT * FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
         
         ArrayList<String> list = new ArrayList<String>();
         
         while (rs.next()) {
-            list.add(getNombreAlumnoById(rs.getInt("ALUMNO_ID")));
+            list.add(rs.getString("APELLIDO") + " " +rs.getString("NOMBRE"));
         }
         
         return list;
@@ -192,7 +192,7 @@ public class Querys extends MasterDatabase {
     // Retorna un array con el id de los alumnos segun el curso
     public ArrayList<Integer> getIdAlumnosByGrupo(Integer id_grupo) throws SQLException {
         
-        ResultSet rs = super.consultar("SELECT * FROM GRUPO_ALUMNO WHERE GRUPO_ID='"+id_grupo+"'");
+        ResultSet rs = super.consultar("SELECT * FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
         
         ArrayList<Integer> list = new ArrayList<Integer>();
         
@@ -326,6 +326,126 @@ public class Querys extends MasterDatabase {
         
         while (rs.next()) {
             ret = rs.getString("EMAIL");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un array con el dni de los alumnos en el grupo
+    public ArrayList<String> getDniByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT DNI, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("DNI"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el telefono de los alumnos en el grupo
+    public ArrayList<String> getTelefonoByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT TELEFONO, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("TELEFONO"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el celular de los alumnos en el grupo
+    public ArrayList<String> getCelularByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT CELULAR, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("CELULAR"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el email de los alumnos en el grupo
+    public ArrayList<String> getEmailByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT EMAIL, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("EMAIL"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el sexo de los alumnos en el grupo
+    public ArrayList<String> getSexoByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT SEXO, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("SEXO"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con la nacionalidad de los alumnos en el grupo
+    public ArrayList<String> getNacionalidadByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ALUMNO.NACIONALIDAD, ALUMNO.APELLIDO, PAIS.NOMBRE FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID INNER JOIN PAIS ON PAIS.PAIS_ID = ALUMNO.NACIONALIDAD WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("PAIS.NOMBRE"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con la direccion de los alumnos en el grupo
+    public ArrayList<String> getDireccionByGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT DIRECCION, APELLIDO FROM ALUMNO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.ALUMNO_ID = ALUMNO.ALUMNO_ID WHERE GRUPO_ALUMNO.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("DIRECCION"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un string con la asistencia del alumno
+    public String getAsistenciaById(Integer id_alumno, String fecha) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ASISTENCIA FROM ASISTENCIA WHERE ALUMNO_ID = '"+id_alumno+"' AND FECHA = '"+fecha+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("ASISTENCIA");
         }
         
         return ret;

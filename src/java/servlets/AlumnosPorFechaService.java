@@ -25,10 +25,10 @@ import org.json.JSONObject;
  *
  * @author Jeremías
  */
-public class AlumnoGrupoService extends HttpServlet {
+public class AlumnosPorFechaService extends HttpServlet {
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
         Querys db = new Querys();
@@ -36,7 +36,9 @@ public class AlumnoGrupoService extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         String idGrupo = request.getParameter("id_grupo");
+        String fecha = request.getParameter("fecha");
         //String idGrupo = "2";
+        //String fecha = "20-11-2016";
         
         String res = null;
         
@@ -47,12 +49,32 @@ public class AlumnoGrupoService extends HttpServlet {
             
             db.conectar();
             
-          
             ArrayList<Integer> idAlumnos = db.getIdAlumnosByGrupo(Integer.parseInt(idGrupo));
             ArrayList<String> nameAlumnos = db.getNombreAlumnosByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> dniAlumnos = db.getDniByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> telefonoAlumnos = db.getTelefonoByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> celularAlumnos = db.getCelularByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> emailAlumnos = db.getEmailByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> sexoAlumnos = db.getSexoByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> nacionalidadAlumnos = db.getNacionalidadByGrupo(Integer.parseInt(idGrupo));
+            ArrayList<String> direccionAlumnos = db.getDireccionByGrupo(Integer.parseInt(idGrupo));
+            
+            ArrayList<String> asistenciaAlumnos = new ArrayList<String>();
+            
+            for (Integer i : idAlumnos) {
+                asistenciaAlumnos.add(db.getAsistenciaById(i, fecha));
+            }
             
             mainJo.put("ids", idAlumnos);
             mainJo.put("nombres", nameAlumnos);
+            mainJo.put("dnis", dniAlumnos);
+            mainJo.put("telefonos", telefonoAlumnos);
+            mainJo.put("celulares", celularAlumnos);
+            mainJo.put("emails", emailAlumnos);
+            mainJo.put("sexos", sexoAlumnos);
+            mainJo.put("nacionalidades", nacionalidadAlumnos);
+            mainJo.put("direcciones", direccionAlumnos);
+            mainJo.put("asistencias", asistenciaAlumnos);
             
             ja.put(mainJo);
             
@@ -72,6 +94,7 @@ public class AlumnoGrupoService extends HttpServlet {
         finally {
             out.println(res);
         }
+        
     }
 
 }

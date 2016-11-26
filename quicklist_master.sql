@@ -16,399 +16,254 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `active_user`
+--
+
+DROP TABLE IF EXISTS `active_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `active_user` (
+  `ACTIVE_USER_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `USER_ID` int(11) NOT NULL,
+  `NAME` varchar(60) NOT NULL,
+  PRIMARY KEY (`ACTIVE_USER_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `active_user`
+--
+
+LOCK TABLES `active_user` WRITE;
+/*!40000 ALTER TABLE `active_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `active_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `alumno`
 --
 
-DROP TABLE IF EXISTS `ALUMNO`;
+DROP TABLE IF EXISTS `alumno`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ALUMNO` (
+CREATE TABLE `alumno` (
   `ALUMNO_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DNI` varchar(60) NOT NULL,
-  `APELLIDO` varchar(45) NOT NULL,
-  `NOMBRE` varchar(45) NOT NULL,
-  `TELEFONO` varchar(20) NOT NULL,
-  `CELULAR` varchar(20) NOT NULL,
-  `EMAIL` varchar(256) NOT NULL,
-  `SEXO` varchar(60) NOT NULL,
-  `NACIONALIDAD` char(60) NOT NULL,
-  `DIRECCION` varchar(80) NOT NULL,
+  `DNI` varchar(60) COLLATE latin1_bin NOT NULL,
+  `APELLIDO` varchar(45) COLLATE latin1_bin NOT NULL,
+  `NOMBRE` varchar(45) COLLATE latin1_bin NOT NULL,
+  `TELEFONO` varchar(20) COLLATE latin1_bin NOT NULL,
+  `CELULAR` varchar(20) COLLATE latin1_bin NOT NULL,
+  `EMAIL` varchar(256) COLLATE latin1_bin NOT NULL,
+  `SEXO` varchar(60) COLLATE latin1_bin NOT NULL,
+  `NACIONALIDAD` char(60) COLLATE latin1_bin NOT NULL,
+  `DIRECCION` varchar(80) COLLATE latin1_bin NOT NULL,
   PRIMARY KEY (`ALUMNO_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `alumno`
+--
+
+LOCK TABLES `alumno` WRITE;
+/*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
+INSERT INTO `alumno` VALUES (1,'41104933','Ramírez','Jeremías Nicolás','44514445','','','Varón','13','Callao 883'),(2,'41123123','Castellano','Gonzalo','46606098','','','Varón','13','Calle Falsa 123'),(3,'41123123','Corazza','Martín Ariel','44514445','','','Varón','13','Calle Falsa 123'),(4,'40123123','Torres','Agustín','44514445','','','Varón','13','Calle Falsa 123');
+/*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `asistencia`
 --
 
-DROP TABLE IF EXISTS `TIPO_ASISTENCIA`;
+DROP TABLE IF EXISTS `asistencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `TIPO_ASISTENCIA` (
-  `TIPO_ASISTENCIA_ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DESCRIPCION` varchar(60) NOT NULL,
-  PRIMARY KEY (`TIPO_ASISTENCIA_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-LOCK TABLES `TIPO_ASISTENCIA` WRITE;
-/*!40000 ALTER TABLE `TIPO_ASISTENCIA` DISABLE KEYS */;
-INSERT INTO `TIPO_ASISTENCIA` VALUES(1, 'PRESENTE');
-INSERT INTO `TIPO_ASISTENCIA` VALUES(2, 'AUSENTE');
-INSERT INTO `TIPO_ASISTENCIA` VALUES(3, 'TARDE');
-/*!40000 ALTER TABLE `TIPO_ASISTENCIA` ENABLE KEYS */;
-UNLOCK TABLES;
-
-DROP TABLE IF EXISTS `ASISTENCIA`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ASISTENCIA` (
+CREATE TABLE `asistencia` (
   `ASISTENCIA_ID` int(11) NOT NULL AUTO_INCREMENT,
   `ALUMNO_ID` int(11) NOT NULL,
   `GRUPO_ID` int(11) NOT NULL,
-  `FECHA` datetime NOT NULL,
   `ASISTENCIA` int(11) NOT NULL,
   `CUENTA_ID` int(11) NOT NULL,
+  `FECHA` varchar(60) COLLATE latin1_bin NOT NULL,
   PRIMARY KEY (`ASISTENCIA_ID`,`ALUMNO_ID`,`GRUPO_ID`,`ASISTENCIA`,`CUENTA_ID`),
   KEY `CUENTA_ID` (`CUENTA_ID`),
-  CONSTRAINT `ASISTENCIA_ibfk_1` FOREIGN KEY (`ALUMNO_ID`) REFERENCES `ALUMNO` (`ALUMNO_ID`),
-  CONSTRAINT `ASISTENCIA_ibfk_2` FOREIGN KEY (`GRUPO_ID`) REFERENCES `GRUPO` (`GRUPO_ID`),
-  CONSTRAINT `ASISTENCIA_ibfk_3` FOREIGN KEY (`ASISTENCIA`) REFERENCES `TIPO_ASISTENCIA` (`TIPO_ASISTENCIA_ID`),
-  CONSTRAINT `ASISTENCIA_ibfk_4` FOREIGN KEY (`CUENTA_ID`) REFERENCES `CUENTA` (`CUENTA_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+  KEY `ASISTENCIA_ibfk_1` (`ALUMNO_ID`),
+  KEY `ASISTENCIA_ibfk_2` (`GRUPO_ID`),
+  KEY `ASISTENCIA_ibfk_3` (`ASISTENCIA`),
+  CONSTRAINT `ASISTENCIA_ibfk_1` FOREIGN KEY (`ALUMNO_ID`) REFERENCES `alumno` (`ALUMNO_ID`),
+  CONSTRAINT `ASISTENCIA_ibfk_2` FOREIGN KEY (`GRUPO_ID`) REFERENCES `grupo` (`GRUPO_ID`),
+  CONSTRAINT `ASISTENCIA_ibfk_3` FOREIGN KEY (`ASISTENCIA`) REFERENCES `tipo_asistencia` (`TIPO_ASISTENCIA_ID`),
+  CONSTRAINT `ASISTENCIA_ibfk_4` FOREIGN KEY (`CUENTA_ID`) REFERENCES `cuenta` (`CUENTA_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `asistencia`
 --
 
-LOCK TABLES `ASISTENCIA` WRITE;
-/*!40000 ALTER TABLE `ASISTENCIA` DISABLE KEYS */;
-/*!40000 ALTER TABLE `ASISTENCIA` ENABLE KEYS */;
+LOCK TABLES `asistencia` WRITE;
+/*!40000 ALTER TABLE `asistencia` DISABLE KEYS */;
+INSERT INTO `asistencia` VALUES (98,2,2,1,1,'21-11-2016'),(99,3,2,2,1,'21-11-2016'),(100,1,2,1,1,'21-11-2016'),(101,2,2,1,1,'21-11-2016'),(102,3,2,2,1,'21-11-2016'),(103,1,2,3,1,'21-11-2016'),(104,2,2,1,1,'21-11-2016'),(105,3,2,2,1,'21-11-2016'),(106,1,2,3,1,'21-11-2016'),(107,1,2,1,1,'21-11-2016'),(108,2,2,1,1,'21-11-2016'),(109,3,2,2,1,'21-11-2016'),(110,1,2,3,1,'21-11-2016'),(111,2,2,1,1,'21-11-2016'),(112,3,2,2,1,'21-11-2016'),(113,1,2,1,1,'21-11-2016'),(114,2,2,2,1,'22-11-2016'),(115,1,2,2,1,'22-11-2016'),(116,3,2,2,1,'22-11-2016'),(117,4,3,2,1,'22-11-2016'),(118,4,3,2,1,'22-11-2016'),(119,4,3,2,1,'22-11-2016'),(120,4,3,2,1,'22-11-2016'),(121,2,2,2,1,'22-11-2016'),(122,3,2,2,1,'22-11-2016'),(123,1,2,2,1,'22-11-2016'),(124,4,3,2,1,'22-11-2016'),(125,2,2,2,1,'22-11-2016'),(126,2,2,2,1,'22-11-2016'),(127,1,2,2,1,'22-11-2016'),(128,3,2,2,1,'22-11-2016'),(129,4,3,2,1,'22-11-2016'),(130,2,2,2,1,'22-11-2016'),(131,3,2,2,1,'22-11-2016'),(132,1,2,2,1,'22-11-2016');
+/*!40000 ALTER TABLE `asistencia` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
 -- Table structure for table `cuenta`
 --
 
-DROP TABLE IF EXISTS `CUENTA`;
+DROP TABLE IF EXISTS `cuenta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CUENTA` (
+CREATE TABLE `cuenta` (
   `CUENTA_ID` int(11) NOT NULL AUTO_INCREMENT,
   `USUARIO` varchar(30) COLLATE latin1_bin NOT NULL,
   `CONTRASEÑA` char(32) COLLATE latin1_bin NOT NULL,
   PRIMARY KEY (`CUENTA_ID`),
   UNIQUE KEY `USUARIO_UNIQUE` (`USUARIO`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cuenta`
+--
+
+LOCK TABLES `cuenta` WRITE;
+/*!40000 ALTER TABLE `cuenta` DISABLE KEYS */;
+INSERT INTO `cuenta` VALUES (1,'Luis','¤]0ô¥/™\r^S5Š»RÆE'),(2,'Vanesa','¤]0ô¥/™\r^S5Š»RÆE');
+/*!40000 ALTER TABLE `cuenta` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `cuenta_grupo`
 --
 
-DROP TABLE IF EXISTS `CUENTA_GRUPO`;
+DROP TABLE IF EXISTS `cuenta_grupo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `CUENTA_GRUPO` (
+CREATE TABLE `cuenta_grupo` (
   `CUENTA_GRUPO_ID` int(11) NOT NULL AUTO_INCREMENT,
   `CUENTA_ID` int(11) NOT NULL,
   `GRUPO_ID` int(11) NOT NULL,
   PRIMARY KEY (`CUENTA_GRUPO_ID`,`CUENTA_ID`,`GRUPO_ID`),
   KEY `GRUPO_ID` (`GRUPO_ID`),
-  CONSTRAINT `CUENTA_GRUPO_ibfk_1` FOREIGN KEY (`CUENTA_ID`) REFERENCES `CUENTA` (`CUENTA_ID`),
-  CONSTRAINT `CUENTA_GRUPO_ibfk_2` FOREIGN KEY (`GRUPO_ID`) REFERENCES `GRUPO` (`GRUPO_ID`)
+  KEY `CUENTA_GRUPO_ibfk_1` (`CUENTA_ID`),
+  CONSTRAINT `CUENTA_GRUPO_ibfk_1` FOREIGN KEY (`CUENTA_ID`) REFERENCES `cuenta` (`CUENTA_ID`),
+  CONSTRAINT `CUENTA_GRUPO_ibfk_2` FOREIGN KEY (`GRUPO_ID`) REFERENCES `grupo` (`GRUPO_ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cuenta_grupo`
+--
+
+LOCK TABLES `cuenta_grupo` WRITE;
+/*!40000 ALTER TABLE `cuenta_grupo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cuenta_grupo` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `grupo`
 --
 
-DROP TABLE IF EXISTS `GRUPO`;
+DROP TABLE IF EXISTS `grupo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `GRUPO` (
+CREATE TABLE `grupo` (
   `GRUPO_ID` int(11) NOT NULL AUTO_INCREMENT,
   `NOMBRE` varchar(45) COLLATE latin1_bin DEFAULT NULL,
   `FLAG` int(11) DEFAULT NULL,
   PRIMARY KEY (`GRUPO_ID`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-LOCK TABLES `GRUPO` WRITE;
+--
+-- Dumping data for table `grupo`
+--
+
+LOCK TABLES `grupo` WRITE;
 /*!40000 ALTER TABLE `grupo` DISABLE KEYS */;
-INSERT INTO `GRUPO` VALUES (1,'1ro 1ra',0),(2,'1ro 2da',0),(3,'1ro 3ra',0),(4,'1ro 4ta',0),(5,'1ro 5ta',0),(6,'1ro 6ta',0),(7,'1ro 7ma',0),(8,'1ro 8va',0),(9,'1ro 9na',0),(10,'1ro 10ma',0),(11,'2do 1ra',0),(12,'2do 2da',0),(13,'2do 3ra',0),(14,'2do 4ta',0),(15,'2do 5ta',0),(16,'2do 6ta',0),(17,'2do 7ma',0),(18,'2do 8va',0),(19,'2do 9na',0),(20,'2do 10ma',0),(21,'3ro 1ra',0),(22,'3ro 2da',0),(23,'3ro 3ra',0),(24,'3ro 4ta',0),(25,'3ro 5ta',0),(26,'3ro 6ta',0),(27,'3ro 7ma',0),(28,'3ro 8va',0),(29,'3ro 9na',0),(30,'3ro 10ma',0),(31,'4to 1ra',0),(32,'4to 2da',0),(33,'4to 3ra',0),(34,'4to 4ta',0),(35,'4to 5ta',0),(36,'4to 6ta',0),(37,'4to 7ma',0),(38,'4to 8va',0),(39,'4to 9na',0),(40,'4to 10ma',0),(41,'5to 1ra',0),(42,'5to 2da',0),(43,'5to 3ra',0),(44,'5to 4ta',0),(45,'5to 5ta',0),(46,'5to 6ta',0),(47,'5to 7ma',0),(48,'5to 8va',0),(49,'5to 9na',0),(50,'5to 10ma',0),(51,'6to 1ra',0),(52,'6to 2da',0),(53,'6to 3ra',0),(54,'6to 4ta',0),(55,'6to 5ta',0),(56,'6to 6ta',0),(57,'6to 7ma',0),(58,'6to 8va',0),(59,'6to 9na',0),(60,'6to 10ma',0),(61,'7mo 1ra',0),(62,'7mo 2da',0),(63,'7mo 3ra',0),(64,'7mo 4ta',0),(65,'7mo 5ta',0),(66,'7mo 6ta',0),(67,'7mo 7ma',0),(68,'7mo 8va',0),(69,'7mo 9na',0),(70,'7mo 10ma',0);
-/*!40000 ALTER TABLE `GRUPO` ENABLE KEYS */;
+INSERT INTO `grupo` VALUES (1,'1ro 1ra',0),(2,'1ro 2da',0),(3,'1ro 3ra',0),(4,'1ro 4ta',0),(5,'1ro 5ta',0),(6,'1ro 6ta',0),(7,'1ro 7ma',0),(8,'1ro 8va',0),(9,'1ro 9na',0),(10,'1ro 10ma',0),(11,'2do 1ra',0),(12,'2do 2da',0),(13,'2do 3ra',0),(14,'2do 4ta',0),(15,'2do 5ta',0),(16,'2do 6ta',0),(17,'2do 7ma',0),(18,'2do 8va',0),(19,'2do 9na',0),(20,'2do 10ma',0),(21,'3ro 1ra',0),(22,'3ro 2da',0),(23,'3ro 3ra',0),(24,'3ro 4ta',0),(25,'3ro 5ta',0),(26,'3ro 6ta',0),(27,'3ro 7ma',0),(28,'3ro 8va',0),(29,'3ro 9na',0),(30,'3ro 10ma',0),(31,'4to 1ra',0),(32,'4to 2da',0),(33,'4to 3ra',0),(34,'4to 4ta',0),(35,'4to 5ta',0),(36,'4to 6ta',0),(37,'4to 7ma',0),(38,'4to 8va',0),(39,'4to 9na',0),(40,'4to 10ma',0),(41,'5to 1ra',0),(42,'5to 2da',0),(43,'5to 3ra',0),(44,'5to 4ta',0),(45,'5to 5ta',0),(46,'5to 6ta',0),(47,'5to 7ma',0),(48,'5to 8va',0),(49,'5to 9na',0),(50,'5to 10ma',0),(51,'6to 1ra',0),(52,'6to 2da',0),(53,'6to 3ra',0),(54,'6to 4ta',0),(55,'6to 5ta',0),(56,'6to 6ta',0),(57,'6to 7ma',0),(58,'6to 8va',0),(59,'6to 9na',0),(60,'6to 10ma',0),(61,'7mo 1ra',0),(62,'7mo 2da',0),(63,'7mo 3ra',0),(64,'7mo 4ta',0),(65,'7mo 5ta',0),(66,'7mo 6ta',0),(67,'7mo 7ma',0),(68,'7mo 8va',0),(69,'7mo 9na',0),(70,'7mo 10ma',0);
+/*!40000 ALTER TABLE `grupo` ENABLE KEYS */;
 UNLOCK TABLES;
+
 --
 -- Table structure for table `grupo_alumno`
 --
 
-DROP TABLE IF EXISTS `GRUPO_ALUMNO`;
+DROP TABLE IF EXISTS `grupo_alumno`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `GRUPO_ALUMNO` (
+CREATE TABLE `grupo_alumno` (
   `GRUPO_ALUMNO_ID` int(11) NOT NULL AUTO_INCREMENT,
   `GRUPO_ID` int(11) NOT NULL,
   `ALUMNO_ID` int(11) NOT NULL,
   PRIMARY KEY (`GRUPO_ALUMNO_ID`,`GRUPO_ID`,`ALUMNO_ID`),
   KEY `ALUMNO_ID` (`ALUMNO_ID`),
-  CONSTRAINT `GRUPO_ALUMNO_ibfk_1` FOREIGN KEY (`GRUPO_ID`) REFERENCES `GRUPO` (`GRUPO_ID`),
-  CONSTRAINT `GRUPO_ALUMNO_ibfk_2` FOREIGN KEY (`ALUMNO_ID`) REFERENCES `ALUMNO` (`ALUMNO_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+  KEY `GRUPO_ALUMNO_ibfk_1` (`GRUPO_ID`),
+  CONSTRAINT `GRUPO_ALUMNO_ibfk_1` FOREIGN KEY (`GRUPO_ID`) REFERENCES `grupo` (`GRUPO_ID`),
+  CONSTRAINT `GRUPO_ALUMNO_ibfk_2` FOREIGN KEY (`ALUMNO_ID`) REFERENCES `alumno` (`ALUMNO_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-DROP TABLE IF EXISTS `PAIS`;
-CREATE TABLE `PAIS` (
-`PAIS_ID` int(11) NOT NULL AUTO_INCREMENT,
-`ISO` char(2) NOT NULL,
-`NOMBRE` varchar(80) NOT NULL,
-PRIMARY KEY (`PAIS_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
- 
-INSERT INTO `PAIS` VALUES(1, 'AF', 'Afganistán');
-INSERT INTO `PAIS` VALUES(2, 'AX', 'Islas Gland');
-INSERT INTO `PAIS` VALUES(3, 'AL', 'Albania');
-INSERT INTO `PAIS` VALUES(4, 'DE', 'Alemania');
-INSERT INTO `PAIS` VALUES(5, 'AD', 'Andorra');
-INSERT INTO `PAIS` VALUES(6, 'AO', 'Angola');
-INSERT INTO `PAIS` VALUES(7, 'AI', 'Anguilla');
-INSERT INTO `PAIS` VALUES(8, 'AQ', 'Antártida');
-INSERT INTO `PAIS` VALUES(9, 'AG', 'Antigua y Barbuda');
-INSERT INTO `PAIS` VALUES(10, 'AN', 'Antillas Holandesas');
-INSERT INTO `PAIS` VALUES(11, 'SA', 'Arabia Saudí');
-INSERT INTO `PAIS` VALUES(12, 'DZ', 'Argelia');
-INSERT INTO `PAIS` VALUES(13, 'AR', 'Argentina');
-INSERT INTO `PAIS` VALUES(14, 'AM', 'Armenia');
-INSERT INTO `PAIS` VALUES(15, 'AW', 'Aruba');
-INSERT INTO `PAIS` VALUES(16, 'AU', 'Australia');
-INSERT INTO `PAIS` VALUES(17, 'AT', 'Austria');
-INSERT INTO `PAIS` VALUES(18, 'AZ', 'Azerbaiyán');
-INSERT INTO `PAIS` VALUES(19, 'BS', 'Bahamas');
-INSERT INTO `PAIS` VALUES(20, 'BH', 'Bahréin');
-INSERT INTO `PAIS` VALUES(21, 'BD', 'Bangladesh');
-INSERT INTO `PAIS` VALUES(22, 'BB', 'Barbados');
-INSERT INTO `PAIS` VALUES(23, 'BY', 'Bielorrusia');
-INSERT INTO `PAIS` VALUES(24, 'BE', 'Bélgica');
-INSERT INTO `PAIS` VALUES(25, 'BZ', 'Belice');
-INSERT INTO `PAIS` VALUES(26, 'BJ', 'Benin');
-INSERT INTO `PAIS` VALUES(27, 'BM', 'Bermudas');
-INSERT INTO `PAIS` VALUES(28, 'BT', 'Bhután');
-INSERT INTO `PAIS` VALUES(29, 'BO', 'Bolivia');
-INSERT INTO `PAIS` VALUES(30, 'BA', 'Bosnia y Herzegovina');
-INSERT INTO `PAIS` VALUES(31, 'BW', 'Botsuana');
-INSERT INTO `PAIS` VALUES(32, 'BV', 'Isla Bouvet');
-INSERT INTO `PAIS` VALUES(33, 'BR', 'Brasil');
-INSERT INTO `PAIS` VALUES(34, 'BN', 'Brunéi');
-INSERT INTO `PAIS` VALUES(35, 'BG', 'Bulgaria');
-INSERT INTO `PAIS` VALUES(36, 'BF', 'Burkina Faso');
-INSERT INTO `PAIS` VALUES(37, 'BI', 'Burundi');
-INSERT INTO `PAIS` VALUES(38, 'CV', 'Cabo Verde');
-INSERT INTO `PAIS` VALUES(39, 'KY', 'Islas Caimán');
-INSERT INTO `PAIS` VALUES(40, 'KH', 'Camboya');
-INSERT INTO `PAIS` VALUES(41, 'CM', 'Camerún');
-INSERT INTO `PAIS` VALUES(42, 'CA', 'Canadá');
-INSERT INTO `PAIS` VALUES(43, 'CF', 'República Centroafricana');
-INSERT INTO `PAIS` VALUES(44, 'TD', 'Chad');
-INSERT INTO `PAIS` VALUES(45, 'CZ', 'República Checa');
-INSERT INTO `PAIS` VALUES(46, 'CL', 'Chile');
-INSERT INTO `PAIS` VALUES(47, 'CN', 'China');
-INSERT INTO `PAIS` VALUES(48, 'CY', 'Chipre');
-INSERT INTO `PAIS` VALUES(49, 'CX', 'Isla de Navidad');
-INSERT INTO `PAIS` VALUES(50, 'VA', 'Ciudad del Vaticano');
-INSERT INTO `PAIS` VALUES(51, 'CC', 'Islas Cocos');
-INSERT INTO `PAIS` VALUES(52, 'CO', 'Colombia');
-INSERT INTO `PAIS` VALUES(53, 'KM', 'Comoras');
-INSERT INTO `PAIS` VALUES(54, 'CD', 'República Democrática del Congo');
-INSERT INTO `PAIS` VALUES(55, 'CG', 'Congo');
-INSERT INTO `PAIS` VALUES(56, 'CK', 'Islas Cook');
-INSERT INTO `PAIS` VALUES(57, 'KP', 'Corea del Norte');
-INSERT INTO `PAIS` VALUES(58, 'KR', 'Corea del Sur');
-INSERT INTO `PAIS` VALUES(59, 'CI', 'Costa de Marfil');
-INSERT INTO `PAIS` VALUES(60, 'CR', 'Costa Rica');
-INSERT INTO `PAIS` VALUES(61, 'HR', 'Croacia');
-INSERT INTO `PAIS` VALUES(62, 'CU', 'Cuba');
-INSERT INTO `PAIS` VALUES(63, 'DK', 'Dinamarca');
-INSERT INTO `PAIS` VALUES(64, 'DM', 'Dominica');
-INSERT INTO `PAIS` VALUES(65, 'DO', 'República Dominicana');
-INSERT INTO `PAIS` VALUES(66, 'EC', 'Ecuador');
-INSERT INTO `PAIS` VALUES(67, 'EG', 'Egipto');
-INSERT INTO `PAIS` VALUES(68, 'SV', 'El Salvador');
-INSERT INTO `PAIS` VALUES(69, 'AE', 'Emiratos Árabes Unidos');
-INSERT INTO `PAIS` VALUES(70, 'ER', 'Eritrea');
-INSERT INTO `PAIS` VALUES(71, 'SK', 'Eslovaquia');
-INSERT INTO `PAIS` VALUES(72, 'SI', 'Eslovenia');
-INSERT INTO `PAIS` VALUES(73, 'ES', 'España');
-INSERT INTO `PAIS` VALUES(74, 'UM', 'Islas ultramarinas de Estados Unidos');
-INSERT INTO `PAIS` VALUES(75, 'US', 'Estados Unidos');
-INSERT INTO `PAIS` VALUES(76, 'EE', 'Estonia');
-INSERT INTO `PAIS` VALUES(77, 'ET', 'Etiopía');
-INSERT INTO `PAIS` VALUES(78, 'FO', 'Islas Feroe');
-INSERT INTO `PAIS` VALUES(79, 'PH', 'Filipinas');
-INSERT INTO `PAIS` VALUES(80, 'FI', 'Finlandia');
-INSERT INTO `PAIS` VALUES(81, 'FJ', 'Fiyi');
-INSERT INTO `PAIS` VALUES(82, 'FR', 'Francia');
-INSERT INTO `PAIS` VALUES(83, 'GA', 'Gabón');
-INSERT INTO `PAIS` VALUES(84, 'GM', 'Gambia');
-INSERT INTO `PAIS` VALUES(85, 'GE', 'Georgia');
-INSERT INTO `PAIS` VALUES(86, 'GS', 'Islas Georgias del Sur y Sandwich del Sur');
-INSERT INTO `PAIS` VALUES(87, 'GH', 'Ghana');
-INSERT INTO `PAIS` VALUES(88, 'GI', 'Gibraltar');
-INSERT INTO `PAIS` VALUES(89, 'GD', 'Granada');
-INSERT INTO `PAIS` VALUES(90, 'GR', 'Grecia');
-INSERT INTO `PAIS` VALUES(91, 'GL', 'Groenlandia');
-INSERT INTO `PAIS` VALUES(92, 'GP', 'Guadalupe');
-INSERT INTO `PAIS` VALUES(93, 'GU', 'Guam');
-INSERT INTO `PAIS` VALUES(94, 'GT', 'Guatemala');
-INSERT INTO `PAIS` VALUES(95, 'GF', 'Guayana Francesa');
-INSERT INTO `PAIS` VALUES(96, 'GN', 'Guinea');
-INSERT INTO `PAIS` VALUES(97, 'GQ', 'Guinea Ecuatorial');
-INSERT INTO `PAIS` VALUES(98, 'GW', 'Guinea-Bissau');
-INSERT INTO `PAIS` VALUES(99, 'GY', 'Guyana');
-INSERT INTO `PAIS` VALUES(100, 'HT', 'Haití');
-INSERT INTO `PAIS` VALUES(101, 'HM', 'Islas Heard y McDonald');
-INSERT INTO `PAIS` VALUES(102, 'HN', 'Honduras');
-INSERT INTO `PAIS` VALUES(103, 'HK', 'Hong Kong');
-INSERT INTO `PAIS` VALUES(104, 'HU', 'Hungría');
-INSERT INTO `PAIS` VALUES(105, 'IN', 'India');
-INSERT INTO `PAIS` VALUES(106, 'ID', 'Indonesia');
-INSERT INTO `PAIS` VALUES(107, 'IR', 'Irán');
-INSERT INTO `PAIS` VALUES(108, 'IQ', 'Iraq');
-INSERT INTO `PAIS` VALUES(109, 'IE', 'Irlanda');
-INSERT INTO `PAIS` VALUES(110, 'IS', 'Islandia');
-INSERT INTO `PAIS` VALUES(111, 'IL', 'Israel');
-INSERT INTO `PAIS` VALUES(112, 'IT', 'Italia');
-INSERT INTO `PAIS` VALUES(113, 'JM', 'Jamaica');
-INSERT INTO `PAIS` VALUES(114, 'JP', 'Japón');
-INSERT INTO `PAIS` VALUES(115, 'JO', 'Jordania');
-INSERT INTO `PAIS` VALUES(116, 'KZ', 'Kazajstán');
-INSERT INTO `PAIS` VALUES(117, 'KE', 'Kenia');
-INSERT INTO `PAIS` VALUES(118, 'KG', 'Kirguistán');
-INSERT INTO `PAIS` VALUES(119, 'KI', 'Kiribati');
-INSERT INTO `PAIS` VALUES(120, 'KW', 'Kuwait');
-INSERT INTO `PAIS` VALUES(121, 'LA', 'Laos');
-INSERT INTO `PAIS` VALUES(122, 'LS', 'Lesotho');
-INSERT INTO `PAIS` VALUES(123, 'LV', 'Letonia');
-INSERT INTO `PAIS` VALUES(124, 'LB', 'Líbano');
-INSERT INTO `PAIS` VALUES(125, 'LR', 'Liberia');
-INSERT INTO `PAIS` VALUES(126, 'LY', 'Libia');
-INSERT INTO `PAIS` VALUES(127, 'LI', 'Liechtenstein');
-INSERT INTO `PAIS` VALUES(128, 'LT', 'Lituania');
-INSERT INTO `PAIS` VALUES(129, 'LU', 'Luxemburgo');
-INSERT INTO `PAIS` VALUES(130, 'MO', 'Macao');
-INSERT INTO `PAIS` VALUES(131, 'MK', 'ARY Macedonia');
-INSERT INTO `PAIS` VALUES(132, 'MG', 'Madagascar');
-INSERT INTO `PAIS` VALUES(133, 'MY', 'Malasia');
-INSERT INTO `PAIS` VALUES(134, 'MW', 'Malawi');
-INSERT INTO `PAIS` VALUES(135, 'MV', 'Maldivas');
-INSERT INTO `PAIS` VALUES(136, 'ML', 'Malí');
-INSERT INTO `PAIS` VALUES(137, 'MT', 'Malta');
-INSERT INTO `PAIS` VALUES(138, 'FK', 'Islas Malvinas');
-INSERT INTO `PAIS` VALUES(139, 'MP', 'Islas Marianas del Norte');
-INSERT INTO `PAIS` VALUES(140, 'MA', 'Marruecos');
-INSERT INTO `PAIS` VALUES(141, 'MH', 'Islas Marshall');
-INSERT INTO `PAIS` VALUES(142, 'MQ', 'Martinica');
-INSERT INTO `PAIS` VALUES(143, 'MU', 'Mauricio');
-INSERT INTO `PAIS` VALUES(144, 'MR', 'Mauritania');
-INSERT INTO `PAIS` VALUES(145, 'YT', 'Mayotte');
-INSERT INTO `PAIS` VALUES(146, 'MX', 'México');
-INSERT INTO `PAIS` VALUES(147, 'FM', 'Micronesia');
-INSERT INTO `PAIS` VALUES(148, 'MD', 'Moldavia');
-INSERT INTO `PAIS` VALUES(149, 'MC', 'Mónaco');
-INSERT INTO `PAIS` VALUES(150, 'MN', 'Mongolia');
-INSERT INTO `PAIS` VALUES(151, 'MS', 'Montserrat');
-INSERT INTO `PAIS` VALUES(152, 'MZ', 'Mozambique');
-INSERT INTO `PAIS` VALUES(153, 'MM', 'Myanmar');
-INSERT INTO `PAIS` VALUES(154, 'NA', 'Namibia');
-INSERT INTO `PAIS` VALUES(155, 'NR', 'Nauru');
-INSERT INTO `PAIS` VALUES(156, 'NP', 'Nepal');
-INSERT INTO `PAIS` VALUES(157, 'NI', 'Nicaragua');
-INSERT INTO `PAIS` VALUES(158, 'NE', 'Níger');
-INSERT INTO `PAIS` VALUES(159, 'NG', 'Nigeria');
-INSERT INTO `PAIS` VALUES(160, 'NU', 'Niue');
-INSERT INTO `PAIS` VALUES(161, 'NF', 'Isla Norfolk');
-INSERT INTO `PAIS` VALUES(162, 'NO', 'Noruega');
-INSERT INTO `PAIS` VALUES(163, 'NC', 'Nueva Caledonia');
-INSERT INTO `PAIS` VALUES(164, 'NZ', 'Nueva Zelanda');
-INSERT INTO `PAIS` VALUES(165, 'OM', 'Omán');
-INSERT INTO `PAIS` VALUES(166, 'NL', 'Países Bajos');
-INSERT INTO `PAIS` VALUES(167, 'PK', 'Pakistán');
-INSERT INTO `PAIS` VALUES(168, 'PW', 'Palau');
-INSERT INTO `PAIS` VALUES(169, 'PS', 'Palestina');
-INSERT INTO `PAIS` VALUES(170, 'PA', 'Panamá');
-INSERT INTO `PAIS` VALUES(171, 'PG', 'Papúa Nueva Guinea');
-INSERT INTO `PAIS` VALUES(172, 'PY', 'Paraguay');
-INSERT INTO `PAIS` VALUES(173, 'PE', 'Perú');
-INSERT INTO `PAIS` VALUES(174, 'PN', 'Islas Pitcairn');
-INSERT INTO `PAIS` VALUES(175, 'PF', 'Polinesia Francesa');
-INSERT INTO `PAIS` VALUES(176, 'PL', 'Polonia');
-INSERT INTO `PAIS` VALUES(177, 'PT', 'Portugal');
-INSERT INTO `PAIS` VALUES(178, 'PR', 'Puerto Rico');
-INSERT INTO `PAIS` VALUES(179, 'QA', 'Qatar');
-INSERT INTO `PAIS` VALUES(180, 'GB', 'Reino Unido');
-INSERT INTO `PAIS` VALUES(181, 'RE', 'Reunión');
-INSERT INTO `PAIS` VALUES(182, 'RW', 'Ruanda');
-INSERT INTO `PAIS` VALUES(183, 'RO', 'Rumania');
-INSERT INTO `PAIS` VALUES(184, 'RU', 'Rusia');
-INSERT INTO `PAIS` VALUES(185, 'EH', 'Sahara Occidental');
-INSERT INTO `PAIS` VALUES(186, 'SB', 'Islas Salomón');
-INSERT INTO `PAIS` VALUES(187, 'WS', 'Samoa');
-INSERT INTO `PAIS` VALUES(188, 'AS', 'Samoa Americana');
-INSERT INTO `PAIS` VALUES(189, 'KN', 'San Cristóbal y Nevis');
-INSERT INTO `PAIS` VALUES(190, 'SM', 'San Marino');
-INSERT INTO `PAIS` VALUES(191, 'PM', 'San Pedro y Miquelón');
-INSERT INTO `PAIS` VALUES(192, 'VC', 'San Vicente y las Granadinas');
-INSERT INTO `PAIS` VALUES(193, 'SH', 'Santa Helena');
-INSERT INTO `PAIS` VALUES(194, 'LC', 'Santa Lucía');
-INSERT INTO `PAIS` VALUES(195, 'ST', 'Santo Tomé y Príncipe');
-INSERT INTO `PAIS` VALUES(196, 'SN', 'Senegal');
-INSERT INTO `PAIS` VALUES(197, 'CS', 'Serbia y Montenegro');
-INSERT INTO `PAIS` VALUES(198, 'SC', 'Seychelles');
-INSERT INTO `PAIS` VALUES(199, 'SL', 'Sierra Leona');
-INSERT INTO `PAIS` VALUES(200, 'SG', 'Singapur');
-INSERT INTO `PAIS` VALUES(201, 'SY', 'Siria');
-INSERT INTO `PAIS` VALUES(202, 'SO', 'Somalia');
-INSERT INTO `PAIS` VALUES(203, 'LK', 'Sri Lanka');
-INSERT INTO `PAIS` VALUES(204, 'SZ', 'Suazilandia');
-INSERT INTO `PAIS` VALUES(205, 'ZA', 'Sudáfrica');
-INSERT INTO `PAIS` VALUES(206, 'SD', 'Sudán');
-INSERT INTO `PAIS` VALUES(207, 'SE', 'Suecia');
-INSERT INTO `PAIS` VALUES(208, 'CH', 'Suiza');
-INSERT INTO `PAIS` VALUES(209, 'SR', 'Surinam');
-INSERT INTO `PAIS` VALUES(210, 'SJ', 'Svalbard y Jan Mayen');
-INSERT INTO `PAIS` VALUES(211, 'TH', 'Tailandia');
-INSERT INTO `PAIS` VALUES(212, 'TW', 'Taiwán');
-INSERT INTO `PAIS` VALUES(213, 'TZ', 'Tanzania');
-INSERT INTO `PAIS` VALUES(214, 'TJ', 'Tayikistán');
-INSERT INTO `PAIS` VALUES(215, 'IO', 'Territorio Británico del Océano Índico');
-INSERT INTO `PAIS` VALUES(216, 'TF', 'Territorios Australes Franceses');
-INSERT INTO `PAIS` VALUES(217, 'TL', 'Timor Oriental');
-INSERT INTO `PAIS` VALUES(218, 'TG', 'Togo');
-INSERT INTO `PAIS` VALUES(219, 'TK', 'Tokelau');
-INSERT INTO `PAIS` VALUES(220, 'TO', 'Tonga');
-INSERT INTO `PAIS` VALUES(221, 'TT', 'Trinidad y Tobago');
-INSERT INTO `PAIS` VALUES(222, 'TN', 'Túnez');
-INSERT INTO `PAIS` VALUES(223, 'TC', 'Islas Turcas y Caicos');
-INSERT INTO `PAIS` VALUES(224, 'TM', 'Turkmenistán');
-INSERT INTO `PAIS` VALUES(225, 'TR', 'Turquía');
-INSERT INTO `PAIS` VALUES(226, 'TV', 'Tuvalu');
-INSERT INTO `PAIS` VALUES(227, 'UA', 'Ucrania');
-INSERT INTO `PAIS` VALUES(228, 'UG', 'Uganda');
-INSERT INTO `PAIS` VALUES(229, 'UY', 'Uruguay');
-INSERT INTO `PAIS` VALUES(230, 'UZ', 'Uzbekistán');
-INSERT INTO `PAIS` VALUES(231, 'VU', 'Vanuatu');
-INSERT INTO `PAIS` VALUES(232, 'VE', 'Venezuela');
-INSERT INTO `PAIS` VALUES(233, 'VN', 'Vietnam');
-INSERT INTO `PAIS` VALUES(234, 'VG', 'Islas Vírgenes Británicas');
-INSERT INTO `PAIS` VALUES(235, 'VI', 'Islas Vírgenes de los Estados Unidos');
-INSERT INTO `PAIS` VALUES(236, 'WF', 'Wallis y Futuna');
-INSERT INTO `PAIS` VALUES(237, 'YE', 'Yemen');
-INSERT INTO `PAIS` VALUES(238, 'DJ', 'Yibuti');
-INSERT INTO `PAIS` VALUES(239, 'ZM', 'Zambia');
-INSERT INTO `PAIS` VALUES(240, 'ZW', 'Zimbabue');
+--
+-- Dumping data for table `grupo_alumno`
+--
 
+LOCK TABLES `grupo_alumno` WRITE;
+/*!40000 ALTER TABLE `grupo_alumno` DISABLE KEYS */;
+INSERT INTO `grupo_alumno` VALUES (1,2,1),(2,2,2),(3,2,3),(4,3,4);
+/*!40000 ALTER TABLE `grupo_alumno` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pais`
+--
+
+DROP TABLE IF EXISTS `pais`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pais` (
+  `PAIS_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `ISO` char(2) NOT NULL,
+  `NOMBRE` varchar(80) NOT NULL,
+  PRIMARY KEY (`PAIS_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pais`
+--
+
+LOCK TABLES `pais` WRITE;
+/*!40000 ALTER TABLE `pais` DISABLE KEYS */;
+INSERT INTO `pais` VALUES (1,'AF','Afganistán'),(2,'AX','Islas Gland'),(3,'AL','Albania'),(4,'DE','Alemania'),(5,'AD','Andorra'),(6,'AO','Angola'),(7,'AI','Anguilla'),(8,'AQ','Antártida'),(9,'AG','Antigua y Barbuda'),(10,'AN','Antillas Holandesas'),(11,'SA','Arabia Saudí'),(12,'DZ','Argelia'),(13,'AR','Argentina'),(14,'AM','Armenia'),(15,'AW','Aruba'),(16,'AU','Australia'),(17,'AT','Austria'),(18,'AZ','Azerbaiyán'),(19,'BS','Bahamas'),(20,'BH','Bahréin'),(21,'BD','Bangladesh'),(22,'BB','Barbados'),(23,'BY','Bielorrusia'),(24,'BE','Bélgica'),(25,'BZ','Belice'),(26,'BJ','Benin'),(27,'BM','Bermudas'),(28,'BT','Bhután'),(29,'BO','Bolivia'),(30,'BA','Bosnia y Herzegovina'),(31,'BW','Botsuana'),(32,'BV','Isla Bouvet'),(33,'BR','Brasil'),(34,'BN','Brunéi'),(35,'BG','Bulgaria'),(36,'BF','Burkina Faso'),(37,'BI','Burundi'),(38,'CV','Cabo Verde'),(39,'KY','Islas Caimán'),(40,'KH','Camboya'),(41,'CM','Camerún'),(42,'CA','Canadá'),(43,'CF','República Centroafricana'),(44,'TD','Chad'),(45,'CZ','República Checa'),(46,'CL','Chile'),(47,'CN','China'),(48,'CY','Chipre'),(49,'CX','Isla de Navidad'),(50,'VA','Ciudad del Vaticano'),(51,'CC','Islas Cocos'),(52,'CO','Colombia'),(53,'KM','Comoras'),(54,'CD','República Democrática del Congo'),(55,'CG','Congo'),(56,'CK','Islas Cook'),(57,'KP','Corea del Norte'),(58,'KR','Corea del Sur'),(59,'CI','Costa de Marfil'),(60,'CR','Costa Rica'),(61,'HR','Croacia'),(62,'CU','Cuba'),(63,'DK','Dinamarca'),(64,'DM','Dominica'),(65,'DO','República Dominicana'),(66,'EC','Ecuador'),(67,'EG','Egipto'),(68,'SV','El Salvador'),(69,'AE','Emiratos Árabes Unidos'),(70,'ER','Eritrea'),(71,'SK','Eslovaquia'),(72,'SI','Eslovenia'),(73,'ES','España'),(74,'UM','Islas ultramarinas de Estados Unidos'),(75,'US','Estados Unidos'),(76,'EE','Estonia'),(77,'ET','Etiopía'),(78,'FO','Islas Feroe'),(79,'PH','Filipinas'),(80,'FI','Finlandia'),(81,'FJ','Fiyi'),(82,'FR','Francia'),(83,'GA','Gabón'),(84,'GM','Gambia'),(85,'GE','Georgia'),(86,'GS','Islas Georgias del Sur y Sandwich del Sur'),(87,'GH','Ghana'),(88,'GI','Gibraltar'),(89,'GD','Granada'),(90,'GR','Grecia'),(91,'GL','Groenlandia'),(92,'GP','Guadalupe'),(93,'GU','Guam'),(94,'GT','Guatemala'),(95,'GF','Guayana Francesa'),(96,'GN','Guinea'),(97,'GQ','Guinea Ecuatorial'),(98,'GW','Guinea-Bissau'),(99,'GY','Guyana'),(100,'HT','Haití'),(101,'HM','Islas Heard y McDonald'),(102,'HN','Honduras'),(103,'HK','Hong Kong'),(104,'HU','Hungría'),(105,'IN','India'),(106,'ID','Indonesia'),(107,'IR','Irán'),(108,'IQ','Iraq'),(109,'IE','Irlanda'),(110,'IS','Islandia'),(111,'IL','Israel'),(112,'IT','Italia'),(113,'JM','Jamaica'),(114,'JP','Japón'),(115,'JO','Jordania'),(116,'KZ','Kazajstán'),(117,'KE','Kenia'),(118,'KG','Kirguistán'),(119,'KI','Kiribati'),(120,'KW','Kuwait'),(121,'LA','Laos'),(122,'LS','Lesotho'),(123,'LV','Letonia'),(124,'LB','Líbano'),(125,'LR','Liberia'),(126,'LY','Libia'),(127,'LI','Liechtenstein'),(128,'LT','Lituania'),(129,'LU','Luxemburgo'),(130,'MO','Macao'),(131,'MK','ARY Macedonia'),(132,'MG','Madagascar'),(133,'MY','Malasia'),(134,'MW','Malawi'),(135,'MV','Maldivas'),(136,'ML','Malí'),(137,'MT','Malta'),(138,'FK','Islas Malvinas'),(139,'MP','Islas Marianas del Norte'),(140,'MA','Marruecos'),(141,'MH','Islas Marshall'),(142,'MQ','Martinica'),(143,'MU','Mauricio'),(144,'MR','Mauritania'),(145,'YT','Mayotte'),(146,'MX','México'),(147,'FM','Micronesia'),(148,'MD','Moldavia'),(149,'MC','Mónaco'),(150,'MN','Mongolia'),(151,'MS','Montserrat'),(152,'MZ','Mozambique'),(153,'MM','Myanmar'),(154,'NA','Namibia'),(155,'NR','Nauru'),(156,'NP','Nepal'),(157,'NI','Nicaragua'),(158,'NE','Níger'),(159,'NG','Nigeria'),(160,'NU','Niue'),(161,'NF','Isla Norfolk'),(162,'NO','Noruega'),(163,'NC','Nueva Caledonia'),(164,'NZ','Nueva Zelanda'),(165,'OM','Omán'),(166,'NL','Países Bajos'),(167,'PK','Pakistán'),(168,'PW','Palau'),(169,'PS','Palestina'),(170,'PA','Panamá'),(171,'PG','Papúa Nueva Guinea'),(172,'PY','Paraguay'),(173,'PE','Perú'),(174,'PN','Islas Pitcairn'),(175,'PF','Polinesia Francesa'),(176,'PL','Polonia'),(177,'PT','Portugal'),(178,'PR','Puerto Rico'),(179,'QA','Qatar'),(180,'GB','Reino Unido'),(181,'RE','Reunión'),(182,'RW','Ruanda'),(183,'RO','Rumania'),(184,'RU','Rusia'),(185,'EH','Sahara Occidental'),(186,'SB','Islas Salomón'),(187,'WS','Samoa'),(188,'AS','Samoa Americana'),(189,'KN','San Cristóbal y Nevis'),(190,'SM','San Marino'),(191,'PM','San Pedro y Miquelón'),(192,'VC','San Vicente y las Granadinas'),(193,'SH','Santa Helena'),(194,'LC','Santa Lucía'),(195,'ST','Santo Tomé y Príncipe'),(196,'SN','Senegal'),(197,'CS','Serbia y Montenegro'),(198,'SC','Seychelles'),(199,'SL','Sierra Leona'),(200,'SG','Singapur'),(201,'SY','Siria'),(202,'SO','Somalia'),(203,'LK','Sri Lanka'),(204,'SZ','Suazilandia'),(205,'ZA','Sudáfrica'),(206,'SD','Sudán'),(207,'SE','Suecia'),(208,'CH','Suiza'),(209,'SR','Surinam'),(210,'SJ','Svalbard y Jan Mayen'),(211,'TH','Tailandia'),(212,'TW','Taiwán'),(213,'TZ','Tanzania'),(214,'TJ','Tayikistán'),(215,'IO','Territorio Británico del Océano Índico'),(216,'TF','Territorios Australes Franceses'),(217,'TL','Timor Oriental'),(218,'TG','Togo'),(219,'TK','Tokelau'),(220,'TO','Tonga'),(221,'TT','Trinidad y Tobago'),(222,'TN','Túnez'),(223,'TC','Islas Turcas y Caicos'),(224,'TM','Turkmenistán'),(225,'TR','Turquía'),(226,'TV','Tuvalu'),(227,'UA','Ucrania'),(228,'UG','Uganda'),(229,'UY','Uruguay'),(230,'UZ','Uzbekistán'),(231,'VU','Vanuatu'),(232,'VE','Venezuela'),(233,'VN','Vietnam'),(234,'VG','Islas Vírgenes Británicas'),(235,'VI','Islas Vírgenes de los Estados Unidos'),(236,'WF','Wallis y Futuna'),(237,'YE','Yemen'),(238,'DJ','Yibuti'),(239,'ZM','Zambia'),(240,'ZW','Zimbabue');
+/*!40000 ALTER TABLE `pais` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tipo_asistencia`
+--
+
+DROP TABLE IF EXISTS `tipo_asistencia`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tipo_asistencia` (
+  `TIPO_ASISTENCIA_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `DESCRIPCION` varchar(60) COLLATE latin1_bin NOT NULL,
+  PRIMARY KEY (`TIPO_ASISTENCIA_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tipo_asistencia`
+--
+
+LOCK TABLES `tipo_asistencia` WRITE;
+/*!40000 ALTER TABLE `tipo_asistencia` DISABLE KEYS */;
+INSERT INTO `tipo_asistencia` VALUES (1,'PRESENTE'),(2,'AUSENTE'),(3,'TARDE');
+/*!40000 ALTER TABLE `tipo_asistencia` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -419,3 +274,4 @@ INSERT INTO `PAIS` VALUES(240, 'ZW', 'Zimbabue');
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
+-- Dump completed on 2016-11-26  9:53:04

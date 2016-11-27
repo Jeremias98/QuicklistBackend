@@ -228,6 +228,7 @@ public class Querys extends MasterDatabase {
         return cant;
     }
     
+    // Revisa la base de datos buscando los alumnos que tengan tres faltas consecutivas
     public List<Integer> revisarAusencias(Integer id_grupo) throws SQLException {
         
         //ResultSet rs = super.consultar("SELECT * FROM ASISTENCIA ORDER BY DESC WHERE GRUPO_ID = '"+id_grupo+"' GROUP BY FECHA LIMIT 3");
@@ -326,6 +327,66 @@ public class Querys extends MasterDatabase {
         
         while (rs.next()) {
             ret = rs.getString("EMAIL");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con la direccion del alumno
+    public String getDireccionById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT DIRECCION FROM ALUMNO WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("DIRECCION");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con el dni del alumno
+    public String getDniById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT DNI FROM ALUMNO WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("DNI");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con el dni del alumno
+    public String getNacionalidadById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ALUMNO.NACIONALIDAD, PAIS.NOMBRE FROM ALUMNO INNER JOIN PAIS ON PAIS.PAIS_ID = ALUMNO.NACIONALIDAD WHERE ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("PAIS.NOMBRE");
+        }
+        
+        return ret;
+        
+    }
+    
+    // Retorna un string con el dni del alumno
+    public String getCursoInicialById(Integer id_alumno) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT GRUPO.NOMBRE FROM GRUPO INNER JOIN GRUPO_ALUMNO ON GRUPO_ALUMNO.GRUPO_ID = GRUPO.GRUPO_ID WHERE GRUPO_ALUMNO.ALUMNO_ID='"+id_alumno+"'");
+        
+        String ret = null;
+        
+        while (rs.next()) {
+            ret = rs.getString("GRUPO.NOMBRE");
         }
         
         return ret;
@@ -440,12 +501,38 @@ public class Querys extends MasterDatabase {
     // Retorna un string con la asistencia del alumno
     public String getAsistenciaById(Integer id_alumno, String fecha) throws SQLException {
         
-        ResultSet rs = super.consultar("SELECT ASISTENCIA FROM ASISTENCIA WHERE ALUMNO_ID = '"+id_alumno+"' AND FECHA = '"+fecha+"'");
+        ResultSet rs = super.consultar("SELECT ASISTENCIA, TIPO_ASISTENCIA.DESCRIPCION FROM ASISTENCIA INNER JOIN TIPO_ASISTENCIA ON TIPO_ASISTENCIA.TIPO_ASISTENCIA_ID = ASISTENCIA.ASISTENCIA WHERE ALUMNO_ID = '"+id_alumno+"' AND FECHA = '"+fecha+"'");
         
         String ret = null;
         
         while (rs.next()) {
-            ret = rs.getString("ASISTENCIA");
+            ret = rs.getString("TIPO_ASISTENCIA.DESCRIPCION");
+        }
+        
+        return ret;
+        
+    }
+    
+    public void setActiveAccount(Integer id_user, String username) throws SQLException {
+        
+        super.guardar("INSERT INTO ACTIVE_USER(USER_ID, NAME) VALUES('"+id_user+"', '"+username+"')");
+        
+    }
+    
+    public void deleteActiveAccount(Integer id_user) throws SQLException {
+        
+        super.guardar("DELETE FROM ACTIVE_USER WHERE USER_ID='"+id_user+"'");
+        
+    }
+    
+    public boolean isActiveAccount(String username) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT * FROM ACTIVE_USER WHERE NAME = '"+username+"'");
+        
+        boolean ret = false;
+        
+        if (rs.next()) {
+            ret = true;
         }
         
         return ret;

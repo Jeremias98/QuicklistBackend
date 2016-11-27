@@ -61,55 +61,68 @@ public class IngresarService extends HttpServlet {
             // Conecto a la base de datos
             db.conectar();
             
-            // Si no hay una id ya enlazada, es un loggeo
-            // Verifico que si hay campos vacíos
-            if (id == null && user != null && pswd != null) {
-                // Verifico que los datos coincidan
-                if (db.isAcountExists( user, pswd )) {
+            // Verifico que la cuenta no esté iniciada
+            if (!db.isActiveAccount(user)) {
                 
-                    int idCuenta = db.getIdCuenta(user, pswd);
+                // Si no hay una id ya enlazada, es un loggeo
+                // Verifico que si hay campos vacíos
+                if (id == null && user != null && pswd != null) {
+                    // Verifico que los datos coincidan
+                    if (db.isAcountExists( user, pswd )) {
 
-                    ArrayList<Integer> grupos_id = db.getIdGruposQueAdministra(idCuenta);
-                    ArrayList<String> grupos_name = db.getNombreGruposQueAdministra(idCuenta);
+                        int idCuenta = db.getIdCuenta(user, pswd);
 
-                    mainJo.put("id_cuenta", idCuenta);
-                    mainJo.put("usuario", user);
-                    mainJo.put("id_grupos", grupos_id);
+                        ArrayList<Integer> grupos_id = db.getIdGruposQueAdministra(idCuenta);
+                        ArrayList<String> grupos_name = db.getNombreGruposQueAdministra(idCuenta);
+
+                        mainJo.put("id_cuenta", idCuenta);
+                        mainJo.put("usuario", user);
+                        mainJo.put("id_grupos", grupos_id);
+                        mainJo.put("name_grupos", grupos_name);
+                        mainJo.put("error", false);
+                        
+                        db.setActiveAccount(idCuenta, user);
+                        
+                        ja.put(mainJo);
+
+                        res = ja.toString();
+
+                    }
+                    // Si los datos no coinciden
+                    else {
+                        mainJo.put("error", true);
+                        mainJo.put("msj", "Usuario o contraseña incorrectos");
+                        ja.put(mainJo);
+                        res = ja.toString();
+                    }
+                }
+                // Si hay una id enlazada, se están pidiendo datos actualizados
+                else if (id != null){
+
+                    ArrayList<String> grupos_name = db.getNombreGruposQueAdministra(Integer.parseInt(id));
+                    ArrayList<Integer> grupos_id = db.getIdGruposQueAdministra(Integer.parseInt(id));
+
                     mainJo.put("name_grupos", grupos_name);
+                    mainJo.put("id_grupos", grupos_id);
                     mainJo.put("error", false);
-                    
+
                     ja.put(mainJo);
 
                     res = ja.toString();
 
                 }
-                // Si los datos no coinciden
+                // Si no, hay campos vacíos
                 else {
                     mainJo.put("error", true);
-                    mainJo.put("msj", "Usuario o contraseña incorrectos");
+                    mainJo.put("msj", "No puede dejar campos vacíos");
                     ja.put(mainJo);
                     res = ja.toString();
                 }
             }
-            // Si hay una id enlazada, se están pidiendo datos actualizados
-            else if (id != null){
-                
-                ArrayList<String> grupos_name = db.getNombreGruposQueAdministra(Integer.parseInt(id));
-                ArrayList<Integer> grupos_id = db.getIdGruposQueAdministra(Integer.parseInt(id));
-                
-                mainJo.put("name_grupos", grupos_name);
-                mainJo.put("id_grupos", grupos_id);
-                mainJo.put("error", false);
-
-                ja.put(mainJo);
-
-                res = ja.toString();
-                
-            }
-            // Si no, hay campos vacíos
             else {
+                
                 mainJo.put("error", true);
-                mainJo.put("msj", "No puede dejar campos vacíos");
+                mainJo.put("msj", "Esa cuenta ya está iniciada en el sistema");
                 ja.put(mainJo);
                 res = ja.toString();
             }

@@ -53,12 +53,20 @@ public class RevisarAsistenciaService extends HttpServlet {
             List<String> telfonoAlumnos = new ArrayList<String>();
             List<String> celularAlumnos = new ArrayList<String>();
             List<String> emailAlumnos = new ArrayList<String>();
+            List<String> direccionAlumnos = new ArrayList<String>();
+            List<String> dniAlumnos = new ArrayList<String>();
+            List<String> nacionalidadAlumnos = new ArrayList<String>();
+            List<String> cursoAlumnos = new ArrayList<String>();
             
             for (Integer i : idAlumnos) {
                 nameAlumnos.add(db.getNombreAlumnoById(i));
                 telfonoAlumnos.add(db.getTelefonoById(i));
                 celularAlumnos.add(db.getCelularById(i));
                 emailAlumnos.add(db.getEmailById(i));
+                direccionAlumnos.add(db.getDireccionById(i));
+                dniAlumnos.add(db.getDniById(i));
+                nacionalidadAlumnos.add(db.getNacionalidadById(i));
+                cursoAlumnos.add(db.getCursoInicialById(i));
             }
             
             mainJo.put("id", idAlumnos);
@@ -66,6 +74,10 @@ public class RevisarAsistenciaService extends HttpServlet {
             mainJo.put("phone", telfonoAlumnos);
             mainJo.put("mobile", celularAlumnos);
             mainJo.put("email", emailAlumnos);
+            mainJo.put("dni", dniAlumnos);
+            mainJo.put("direccion", direccionAlumnos);
+            mainJo.put("nacionalidad", nacionalidadAlumnos);
+            mainJo.put("curso", cursoAlumnos);
             
             ja.put(mainJo);
             

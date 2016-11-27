@@ -48,6 +48,10 @@
         <servlet-name>AlumnosPorFechaService</servlet-name>
         <servlet-class>servlets.AlumnosPorFechaService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutService</servlet-name>
+        <servlet-class>servlets.LogoutService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AgregarGrupoService</servlet-name>
         <url-pattern>/AgregarGrupoService</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>AlumnosPorFechaService</servlet-name>
         <url-pattern>/AlumnosPorFechaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutService</servlet-name>
+        <url-pattern>/LogoutService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

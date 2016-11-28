@@ -37,7 +37,9 @@ public class RevisarAsistenciaService extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         Integer idGrupo = Integer.parseInt(request.getParameter("id_grupo"));
+        String fecha = request.getParameter("fecha");
         //Integer idGrupo = 2;
+        //String fecha = "28-11-2016";
         
         String res = null;
         
@@ -48,36 +50,13 @@ public class RevisarAsistenciaService extends HttpServlet {
             
             db.conectar();
             
-            List<Integer> idAlumnos = db.revisarAusencias(idGrupo);
-            List<String> nameAlumnos = new ArrayList<String>();
-            List<String> telfonoAlumnos = new ArrayList<String>();
-            List<String> celularAlumnos = new ArrayList<String>();
-            List<String> emailAlumnos = new ArrayList<String>();
-            List<String> direccionAlumnos = new ArrayList<String>();
-            List<String> dniAlumnos = new ArrayList<String>();
-            List<String> nacionalidadAlumnos = new ArrayList<String>();
-            List<String> cursoAlumnos = new ArrayList<String>();
-            
-            for (Integer i : idAlumnos) {
-                nameAlumnos.add(db.getNombreAlumnoById(i));
-                telfonoAlumnos.add(db.getTelefonoById(i));
-                celularAlumnos.add(db.getCelularById(i));
-                emailAlumnos.add(db.getEmailById(i));
-                direccionAlumnos.add(db.getDireccionById(i));
-                dniAlumnos.add(db.getDniById(i));
-                nacionalidadAlumnos.add(db.getNacionalidadById(i));
-                cursoAlumnos.add(db.getCursoInicialById(i));
-            }
+            List<Integer> idAlumnos = db.getIdAlumnosByGrupoAsistencia(idGrupo);
+            List<String> nameAlumnos = db.getNombreAlumnosByGrupoAsistencia(idGrupo);
+            List<String> assistAlumnos = db.getAsistenciaByGrupo(idGrupo, fecha);
             
             mainJo.put("id", idAlumnos);
             mainJo.put("name", nameAlumnos);
-            mainJo.put("phone", telfonoAlumnos);
-            mainJo.put("mobile", celularAlumnos);
-            mainJo.put("email", emailAlumnos);
-            mainJo.put("dni", dniAlumnos);
-            mainJo.put("direccion", direccionAlumnos);
-            mainJo.put("nacionalidad", nacionalidadAlumnos);
-            mainJo.put("curso", cursoAlumnos);
+            mainJo.put("assist", assistAlumnos);
             
             ja.put(mainJo);
             

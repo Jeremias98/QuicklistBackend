@@ -220,6 +220,37 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Retorna un array con el id de los alumnos segun el curso en la tabla de asistencias
+    public ArrayList<Integer> getIdAlumnosByGrupoAsistencia(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ALUMNO_ID FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        while (rs.next()) {
+            list.add(rs.getInt("ALUMNO_ID"));
+        }
+        
+        return list;
+        
+    }
+    
+    // Retorna un array con el nombre de los alumnos segun el curso
+    public ArrayList<String> getNombreAlumnosByGrupoAsistencia(Integer id_grupo) throws SQLException {
+        
+        
+        ResultSet rs = super.consultar("SELECT APELLIDO, NOMBRE FROM ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE ASISTENCIA.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("ALUMNO.APELLIDO") + " " +rs.getString("ALUMNO.NOMBRE"));
+        }
+        
+        return list;
+        
+    }
+    
     // Retorna el nombre del alumno por la id dada
     public String getNombreAlumnoById(int id) throws SQLException {
         
@@ -271,6 +302,21 @@ public class Querys extends MasterDatabase {
         }
         
         return ret;
+        
+    }
+    
+    // Retorna los alumnos y su asistencia en una fecha dada
+    public List<String> getAsistenciaByGrupo(Integer id_grupo, String fecha) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ASISTENCIA.ASISTENCIA, TIPO_ASISTENCIA.DESCRIPCION, ALUMNO.APELLIDO FROM ASISTENCIA INNER JOIN TIPO_ASISTENCIA ON TIPO_ASISTENCIA.TIPO_ASISTENCIA_ID = ASISTENCIA.ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE GRUPO_ID = '"+id_grupo+"' AND FECHA = '"+fecha+"' ORDER BY ALUMNO.APELLIDO");
+        
+        List<String> list = new ArrayList<String>();
+        
+        while (rs.next()) {
+            list.add(rs.getString("TIPO_ASISTENCIA.DESCRIPCION"));
+        }
+        
+        return list;
         
     }
     

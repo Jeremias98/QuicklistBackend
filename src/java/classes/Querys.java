@@ -56,6 +56,22 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Retorna una lista con el id de los grupos que administra una cuenta
+    public ArrayList<Integer> getIdGrupos() throws SQLException {
+        
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        
+        ResultSet rs = super.consultar("SELECT * FROM GRUPO");
+        
+        while(rs.next())
+        {
+            list.add(rs.getInt("GRUPO_ID"));
+        }
+        
+        return list;
+        
+    }
+    
     
     // Retorna el nombre del grupo por la ID dada
     private String getGrupoById(int grupo_id) throws SQLException {

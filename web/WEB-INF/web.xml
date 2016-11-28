@@ -52,6 +52,14 @@
         <servlet-name>LogoutService</servlet-name>
         <servlet-class>servlets.LogoutService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ListarAlumnosAsistencia</servlet-name>
+        <servlet-class>servlets.ListarAlumnosAsistencia</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RevisarTodasAsistenciasService</servlet-name>
+        <servlet-class>servlets.RevisarTodasAsistenciasService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AgregarGrupoService</servlet-name>
         <url-pattern>/AgregarGrupoService</url-pattern>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>LogoutService</servlet-name>
         <url-pattern>/LogoutService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ListarAlumnosAsistencia</servlet-name>
+        <url-pattern>/ListarAlumnosAsistencia</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RevisarTodasAsistenciasService</servlet-name>
+        <url-pattern>/RevisarTodasAsistenciasService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

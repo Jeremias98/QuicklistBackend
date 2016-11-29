@@ -10,7 +10,6 @@ import classes.Querys;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ import org.json.JSONObject;
  *
  * @author Jeremías
  */
-public class RevisarAsistenciaService extends HttpServlet {
+public class ModificarAsistenciaService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -36,10 +35,18 @@ public class RevisarAsistenciaService extends HttpServlet {
         
         PrintWriter out = response.getWriter();
         
-        Integer idGrupo = Integer.parseInt(request.getParameter("id_grupo"));
+        Integer idAlumnos = Integer.parseInt(request.getParameter("id_alumnos"));
+        Integer asistenciaAlumnos = Integer.parseInt(request.getParameter("assist_alumnos"));
         String fecha = request.getParameter("fecha");
-        //Integer idGrupo = 2;
-        //String fecha = "28-11-2016";
+        Integer grupo = Integer.parseInt(request.getParameter("grupo"));
+        Integer cuenta = Integer.parseInt(request.getParameter("cuenta"));
+        
+        /*
+        Integer idGrupo = 2;
+        Integer idCuenta = 1;
+        Integer asistencia = 1;
+        Integer idAlumno = 1;
+        String fecha = "28-11-2016";*/
         
         String res = null;
         
@@ -50,13 +57,10 @@ public class RevisarAsistenciaService extends HttpServlet {
             
             db.conectar();
             
-            List<Integer> idAlumnos = db.getIdAlumnosByGrupoAsistencia(idGrupo, fecha);
-            List<String> nameAlumnos = db.getNombreAlumnosByGrupoAsistencia(idGrupo, fecha);
-            List<String> assistAlumnos = db.getAsistenciaByGrupo(idGrupo, fecha);
+            db.modificarAsistencia(idAlumnos, asistenciaAlumnos, grupo, fecha, cuenta);
             
-            mainJo.put("id", idAlumnos);
-            mainJo.put("name", nameAlumnos);
-            mainJo.put("assist", assistAlumnos);
+            mainJo.put("success", true);
+            mainJo.put("msj", "Se ha modificado la asistencia");
             
             ja.put(mainJo);
             

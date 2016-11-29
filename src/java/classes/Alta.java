@@ -82,7 +82,7 @@ public class Alta extends MasterDatabase {
     
     // El pin estaría en algún archivo de configuración
     public String getPin() {
-        return "1234";
+        return "4815162342";
     }
     
     public void guardarComoFavorito(String grupo) throws SQLException {

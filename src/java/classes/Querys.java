@@ -221,14 +221,15 @@ public class Querys extends MasterDatabase {
     }
     
     // Retorna un array con el id de los alumnos segun el curso en la tabla de asistencias
-    public ArrayList<Integer> getIdAlumnosByGrupoAsistencia(Integer id_grupo) throws SQLException {
+    public ArrayList<Integer> getIdAlumnosByGrupoAsistencia(Integer id_grupo, String fecha) throws SQLException {
         
-        ResultSet rs = super.consultar("SELECT ALUMNO_ID FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        ResultSet rs = super.consultar("SELECT ASISTENCIA.ALUMNO_ID FROM ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE ASISTENCIA.GRUPO_ID = '"+id_grupo+"' AND ASISTENCIA.FECHA = '"+fecha+"' ORDER BY ALUMNO.APELLIDO");
         
         ArrayList<Integer> list = new ArrayList<Integer>();
         
         while (rs.next()) {
-            list.add(rs.getInt("ALUMNO_ID"));
+            list.add(rs.getInt("ASISTENCIA.ALUMNO_ID"));
         }
         
         return list;
@@ -236,10 +237,10 @@ public class Querys extends MasterDatabase {
     }
     
     // Retorna un array con el nombre de los alumnos segun el curso
-    public ArrayList<String> getNombreAlumnosByGrupoAsistencia(Integer id_grupo) throws SQLException {
+    public ArrayList<String> getNombreAlumnosByGrupoAsistencia(Integer id_grupo, String fecha) throws SQLException {
         
         
-        ResultSet rs = super.consultar("SELECT APELLIDO, NOMBRE FROM ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE ASISTENCIA.GRUPO_ID = '"+id_grupo+"' ORDER BY ALUMNO.APELLIDO");
+        ResultSet rs = super.consultar("SELECT APELLIDO, NOMBRE FROM ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE ASISTENCIA.GRUPO_ID = '"+id_grupo+"' AND ASISTENCIA.FECHA = '"+fecha+"' ORDER BY ALUMNO.APELLIDO");
         
         ArrayList<String> list = new ArrayList<String>();
         
@@ -308,7 +309,7 @@ public class Querys extends MasterDatabase {
     // Retorna los alumnos y su asistencia en una fecha dada
     public List<String> getAsistenciaByGrupo(Integer id_grupo, String fecha) throws SQLException {
         
-        ResultSet rs = super.consultar("SELECT ASISTENCIA.ASISTENCIA, TIPO_ASISTENCIA.DESCRIPCION, ALUMNO.APELLIDO FROM ASISTENCIA INNER JOIN TIPO_ASISTENCIA ON TIPO_ASISTENCIA.TIPO_ASISTENCIA_ID = ASISTENCIA.ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE GRUPO_ID = '"+id_grupo+"' AND FECHA = '"+fecha+"' ORDER BY ALUMNO.APELLIDO");
+        ResultSet rs = super.consultar("SELECT ASISTENCIA.ASISTENCIA, TIPO_ASISTENCIA.DESCRIPCION, ALUMNO.APELLIDO FROM ASISTENCIA INNER JOIN TIPO_ASISTENCIA ON TIPO_ASISTENCIA.TIPO_ASISTENCIA_ID = ASISTENCIA.ASISTENCIA INNER JOIN ALUMNO ON ALUMNO.ALUMNO_ID = ASISTENCIA.ALUMNO_ID WHERE GRUPO_ID = '"+id_grupo+"' AND FECHA = '"+fecha+"' ORDER BY ALUMNO.APELLIDO LIMIT "+getCantidadDeAlumnos(id_grupo));
         
         List<String> list = new ArrayList<String>();
         
@@ -599,6 +600,25 @@ public class Querys extends MasterDatabase {
         
         return ret;
         
+    }
+    
+    public void modificarAsistencia(Integer id_alumno, Integer asistencia, Integer id_grupo, String fecha, Integer id_cuenta) throws SQLException {
+            
+        super.guardar("UPDATE ASISTENCIA SET ASISTENCIA = '"+asistencia+"', CUENTA_ID = '"+id_cuenta+"' WHERE GRUPO_ID = '"+id_grupo+"' AND ALUMNO_ID = '"+id_alumno+"' AND FECHA = '"+fecha+"'");
+            
+    }
+    
+    public String getUltimaTomaAsistencia(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA_ID DESC LIMIT 1");
+        
+        String ret = null;
+        
+        if (rs.next()) {
+            ret = rs.getString("FECHA");
+        }
+        
+        return ret;
     }
     
 }

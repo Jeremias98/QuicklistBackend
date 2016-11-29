@@ -60,6 +60,14 @@
         <servlet-name>RevisarTodasAsistenciasService</servlet-name>
         <servlet-class>servlets.RevisarTodasAsistenciasService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ModificarAsistenciaService</servlet-name>
+        <servlet-class>servlets.ModificarAsistenciaService</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UltimaTomaAsistenciaService</servlet-name>
+        <servlet-class>servlets.UltimaTomaAsistenciaService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AgregarGrupoService</servlet-name>
         <url-pattern>/AgregarGrupoService</url-pattern>
@@ -119,6 +127,14 @@
     <servlet-mapping>
         <servlet-name>RevisarTodasAsistenciasService</servlet-name>
         <url-pattern>/RevisarTodasAsistenciasService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ModificarAsistenciaService</servlet-name>
+        <url-pattern>/ModificarAsistenciaService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UltimaTomaAsistenciaService</servlet-name>
+        <url-pattern>/UltimaTomaAsistenciaService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -10,8 +10,6 @@ import classes.Querys;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -26,7 +24,7 @@ import org.json.JSONObject;
  *
  * @author Jeremías
  */
-public class RevisarAsistenciaService extends HttpServlet {
+public class UltimaTomaAsistenciaService extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -37,9 +35,6 @@ public class RevisarAsistenciaService extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         Integer idGrupo = Integer.parseInt(request.getParameter("id_grupo"));
-        String fecha = request.getParameter("fecha");
-        //Integer idGrupo = 2;
-        //String fecha = "28-11-2016";
         
         String res = null;
         
@@ -50,13 +45,9 @@ public class RevisarAsistenciaService extends HttpServlet {
             
             db.conectar();
             
-            List<Integer> idAlumnos = db.getIdAlumnosByGrupoAsistencia(idGrupo, fecha);
-            List<String> nameAlumnos = db.getNombreAlumnosByGrupoAsistencia(idGrupo, fecha);
-            List<String> assistAlumnos = db.getAsistenciaByGrupo(idGrupo, fecha);
-            
-            mainJo.put("id", idAlumnos);
-            mainJo.put("name", nameAlumnos);
-            mainJo.put("assist", assistAlumnos);
+            String uta = db.getUltimaTomaAsistencia(idGrupo);
+                      
+            mainJo.put("fecha", uta);
             
             ja.put(mainJo);
             

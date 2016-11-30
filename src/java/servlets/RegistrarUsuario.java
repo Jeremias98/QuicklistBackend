@@ -7,6 +7,7 @@
 package servlets;
 
 import classes.Alta;
+import classes.Validar;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -46,25 +47,34 @@ public class RegistrarUsuario extends HttpServlet {
         
         Alta db = new Alta();
         
+        Validar v = new Validar();
+        
         try {
             
             if (!user.equals("") && !pswd.equals("") && !pswd2.equals("") && !pin.equals("")) {
                 
-                db.conectar();
-                
-                if (pswd.equals(pswd2) && pin.equals(db.getPin())) {
+                if (v.isUsernameOrPasswordValid(user) && v.isUsernameOrPasswordValid(pswd)) {
                     
-                    res = "registrarse.jsp?message2=" + URLEncoder.encode("Registrado correctamente", "UTF-8");
-                    db.registrarUsuario(user, pswd);
+                    db.conectar();
+                
+                    if (pswd.equals(pswd2) && pin.equals(db.getPin())) {
+
+                        res = "registrarse.jsp?message2=" + URLEncoder.encode("Registrado correctamente", "UTF-8");
+                        db.registrarUsuario(user, pswd);
+
+                    }
+                    else {
+
+                        res = "registrarse.jsp?message=" + URLEncoder.encode("Las contraseñas no coinciden", "UTF-8");
+
+                    }
+
+                    db.desconectar();
                     
                 }
                 else {
-                    
-                    res = "registrarse.jsp?message=" + URLEncoder.encode("Las contraseñas no coinciden", "UTF-8");
-                    
+                    res = "registrarse.jsp?message=" + URLEncoder.encode("Caracteres incorrectos", "UTF-8");
                 }
-                
-                db.desconectar();
                 
             }
             else {

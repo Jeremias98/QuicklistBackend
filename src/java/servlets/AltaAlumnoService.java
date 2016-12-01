@@ -41,6 +41,7 @@ public class AltaAlumnoService extends HttpServlet {
         String sexo = request.getParameter("sexo");
         String nacionalidad = request.getParameter("nacionalidad");
         String dni = request.getParameter("dni");
+        String legajo = request.getParameter("legajo");
         String direccion = request.getParameter("direccion");
         String curso = request.getParameter("curso");
         String division = request.getParameter("division");
@@ -65,7 +66,7 @@ public class AltaAlumnoService extends HttpServlet {
                 {
                     db.conectar();
                 
-                    db.altaAlumno(apellido, nombre, telefono, celular, email, sexo, nacionalidad, dni, direccion, curso, division);
+                    db.altaAlumno(apellido, nombre, telefono, celular, email, sexo, nacionalidad, dni, direccion, curso, division, legajo);
 
                     db.desconectar();
                     

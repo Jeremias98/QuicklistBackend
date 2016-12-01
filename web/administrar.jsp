@@ -61,7 +61,8 @@
                 <div class="formulario">
                     <form method="POST" action="AltaAlumno">
                         <h2>Datos Personales</h2><p class="msg_error">${param.message}</p><p class="msg_correcto">${param.message2}</p><br>
-                        <input type="text" placeholder="Número DNI (*)" class="entrada_form" name="dni">
+                        <input type="text" placeholder="Número DNI (*)" class="input_left" name="dni">
+                        <input type="text" placeholder="Número de legajo (*)" class="input_right" name="legajo">
                         <input type="text" placeholder="Apellido(s) (*)" class="input_left" name="apellido">
                         <input type="text" placeholder="Nombre(s) (*)" class="input_right" name="nombre">
                         <select name="sexo" class="input_left">

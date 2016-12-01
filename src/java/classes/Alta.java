@@ -17,9 +17,9 @@ import java.sql.SQLException;
 public class Alta extends MasterDatabase {
     
     //Método para registrar un alumno
-    public void altaAlumno(String dni, String apellido, String nombre, String telefono, String celular, String email, String sexo, String nacionalidad, String direccion, String curso, String division) throws SQLException {
+    public void altaAlumno(String dni, String apellido, String nombre, String telefono, String celular, String email, String sexo, String nacionalidad, String direccion, String curso, String division, String legajo) throws SQLException {
         
-        ResultSet rs = super.guardarAndGetKey("INSERT INTO ALUMNO(DNI, APELLIDO, NOMBRE, TELEFONO, CELULAR, EMAIL, SEXO, NACIONALIDAD, DIRECCION) VALUES ('"+dni+"','"+apellido+"','"+nombre+"', '"+telefono+"', '"+celular+"', '"+email+"', '"+sexo+"','"+nacionalidad+"', '"+direccion+"')");
+        ResultSet rs = super.guardarAndGetKey("INSERT INTO ALUMNO(DNI, APELLIDO, NOMBRE, TELEFONO, CELULAR, EMAIL, SEXO, NACIONALIDAD, DIRECCION, LEGAJO) VALUES ('"+dni+"','"+apellido+"','"+nombre+"', '"+telefono+"', '"+celular+"', '"+email+"', '"+sexo+"','"+nacionalidad+"', '"+direccion+"', '"+legajo+"')");
         
         int autoIncKeyFromFunc;
         

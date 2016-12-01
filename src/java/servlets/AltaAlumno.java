@@ -43,6 +43,7 @@ public class AltaAlumno extends HttpServlet {
         String sexo = request.getParameter("sexo");
         String nacionalidad = request.getParameter("nacionalidad");
         String dni = request.getParameter("dni");
+        String legajo = request.getParameter("legajo");
         String direccion = request.getParameter("direccion");
         String curso = request.getParameter("curso");
         String division = request.getParameter("division");
@@ -54,7 +55,7 @@ public class AltaAlumno extends HttpServlet {
             db.conectar();
             
             // Validación de datos
-            if(apellido.equals("") || nombre.equals("") || dni.equals("")){
+            if(apellido.equals("") || nombre.equals("") || dni.equals("") || legajo.equals("")){
                 // Error, llenar los campos correspondientes
                 res = "administrar.jsp?message=" + URLEncoder.encode("No ha completado todos los campos obligatorios", "UTF-8");
             } 
@@ -66,8 +67,7 @@ public class AltaAlumno extends HttpServlet {
                 else
                 {
                     res = "administrar.jsp?message2=" + URLEncoder.encode("Datos guardados", "UTF-8");
-                    db.altaAlumno(dni, apellido, nombre, telefono, celular, email, sexo, nacionalidad, direccion, curso, division);
-                    
+                    db.altaAlumno(dni, apellido, nombre, telefono, celular, email, sexo, nacionalidad, direccion, curso, division, legajo);
                 }
                 
             }

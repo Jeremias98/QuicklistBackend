@@ -41,4 +41,39 @@ public class Validar {
         
     }
     
+    public boolean isCorrectToDatabase(String $cadena1) {
+        
+        char[] cadena = $cadena1.toLowerCase().toCharArray();
+        
+        for (int i = 0; i < cadena.length; i++) {
+            
+            if (cadena[i] == ' '
+                    || cadena[i] == '='
+                    || cadena[i] == '?'
+                    || cadena[i] == '+'
+                    || cadena[i] == '*'
+                    || cadena[i] == '/'
+                    || cadena[i] == '.'
+                    || cadena[i] == ','
+                    || cadena[i] == ';'
+                    || cadena[i] == '!'
+                    || cadena[i] == '>'
+                    || cadena[i] == '<'
+                    || cadena[i] == ':'
+                    || cadena[i] == '\''
+                    || cadena[i] == 'à'
+                    || cadena[i] == 'è'
+                    || cadena[i] == 'ì'
+                    || cadena[i] == 'ò'
+                    || cadena[i] == 'ù') {
+                
+                return false;
+                
+            }
+        }
+        
+        return true;
+        
+    }
+    
 }

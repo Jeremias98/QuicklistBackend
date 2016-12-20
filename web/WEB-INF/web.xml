@@ -72,6 +72,10 @@
         <servlet-name>EstadisticasService</servlet-name>
         <servlet-class>servlets.EstadisticasService</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EstadisticasAlumnoService</servlet-name>
+        <servlet-class>servlets.EstadisticasAlumnoService</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AgregarGrupoService</servlet-name>
         <url-pattern>/AgregarGrupoService</url-pattern>
@@ -143,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>EstadisticasService</servlet-name>
         <url-pattern>/EstadisticasService</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EstadisticasAlumnoService</servlet-name>
+        <url-pattern>/EstadisticasAlumnoService</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

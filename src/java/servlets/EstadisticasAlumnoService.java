@@ -27,7 +27,7 @@ import org.json.JSONObject;
  *
  * @author Jeremías
  */
-public class EstadisticasService extends HttpServlet {
+public class EstadisticasAlumnoService extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,32 +52,48 @@ public class EstadisticasService extends HttpServlet {
             
             db.conectar();
             
-            double porcentajeAsistencia = db.getPorcentajeDeAsistencia(idGrupo, fecha);
-            double porcentajeInasistencia = db.getPorcentajeDeInasistencia(idGrupo, fecha);
-            double mediaAsistencia = db.getMediaDeAsistencia(idGrupo, fecha);
-            
             ArrayList<String> fechasSemana = db.getDiasDeSemanaByFecha(fecha);
             
-            Integer inasistenciaSemana = db.totalInasistenciaPorSemana(idGrupo, fechasSemana);
-            Integer asistenciaSemana = db.totalAsistenciaPorSemana(idGrupo, fechasSemana);
+            List<Integer> idAlumnos = db.getIdAlumnosByGrupoAsistencia(idGrupo, fecha);
+            List<String> nameAlumnos = db.getNombreAlumnosByGrupoAsistencia(idGrupo, fecha);
             
-            Integer inasistenciaMes = db.getInasistenciaPorMes(idGrupo, fecha);
-            Integer asistenciaMes = db.getAsistenciaPorMes(idGrupo, fecha);
-                        
-            // Porcentajes
-            mainJo.put("porcentaje_asistencia", porcentajeAsistencia);
-            mainJo.put("porcentaje_inasistencia", porcentajeInasistencia);
+            ArrayList<Integer> asistencia_semanal = new ArrayList<Integer>();
+            ArrayList<Integer> asistencia_mensual = new ArrayList<Integer>();
+
+            ArrayList<Integer> presente_semanal = new ArrayList<Integer>();
+            ArrayList<Integer> ausente_semanal = new ArrayList<Integer>();
+            ArrayList<Integer> tarde_semanal = new ArrayList<Integer>();
             
-            // Media
-            mainJo.put("media_asistencia", mediaAsistencia);
+            ArrayList<Integer> presente_mensual = new ArrayList<Integer>();
+            ArrayList<Integer> ausente_mensual = new ArrayList<Integer>();
+            ArrayList<Integer> tarde_mensual = new ArrayList<Integer>();
             
-            // Por semana
-            mainJo.put("inasistencia_semana", inasistenciaSemana);
-            mainJo.put("asistencia_semana", asistenciaSemana);
+            // Lista de alumnos
+            mainJo.put("id_alumno", idAlumnos);
+            mainJo.put("nombre_alumno", nameAlumnos);
             
-            // Por mes
-            mainJo.put("inasistencia_mes", inasistenciaMes);
-            mainJo.put("asistencia_mes", asistenciaMes);
+            for (Integer i : idAlumnos) {
+                
+                asistencia_semanal = db.getAsistenciaPorAlumnoByFecha(idGrupo, i, fechasSemana);
+                asistencia_mensual = db.getAsistenciaPorAlumnoByMes(idGrupo, i, fecha);
+                
+                presente_semanal.add(asistencia_semanal.get(0));
+                ausente_semanal.add(asistencia_semanal.get(1));
+                tarde_semanal.add(asistencia_semanal.get(2));
+                
+                presente_mensual.add(asistencia_mensual.get(0));
+                ausente_mensual.add(asistencia_mensual.get(1));
+                tarde_mensual.add(asistencia_mensual.get(2));
+                                
+            }
+            
+            mainJo.put("presentes_semanal", presente_semanal);
+            mainJo.put("ausentes_semanal", ausente_semanal);
+            mainJo.put("tardes_semanal", tarde_semanal);
+            
+            mainJo.put("presentes_mensual", presente_mensual);
+            mainJo.put("ausentes_mensual", ausente_mensual);
+            mainJo.put("tardes_mensual", tarde_mensual);
             
             ja.put(mainJo);
             
@@ -100,6 +116,6 @@ public class EstadisticasService extends HttpServlet {
             out.println(res);
         }
         
-    }
+    } 
 
 }

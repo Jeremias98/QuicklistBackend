@@ -638,7 +638,7 @@ public class Querys extends MasterDatabase {
     }
     
     
-    /* Consultas de estadísticas */
+    /* ******** Consultas de estadísticas ******** */
     
     // Total de alumnos en un grupo
     private Integer getTotalAlumnosEnGrupo(Integer id_grupo) throws SQLException {
@@ -804,20 +804,55 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Cálculo de la asistencia por mes (total)
+    public Integer getAsistenciaPorMes(Integer id_grupo, String date) throws SQLException {
+        
+        String mes = Character.toString(date.charAt(3)) + Character.toString(date.charAt(4));
+        
+        Integer totalPresentes = getTotalPresentesEnGrupo(id_grupo, mes);
+        
+        return totalPresentes;
+    }
+    
+    // Cálculo de la inasistencia por mes (total)
+    public Integer getInasistenciaPorMes(Integer id_grupo, String date) throws SQLException {
+        
+        String mes = Character.toString(date.charAt(3)) + Character.toString(date.charAt(4));
+        
+        Integer totalAusentes = getTotalAusentesEnGrupo(id_grupo, mes);
+        
+        return totalAusentes;
+    }
+    
+    // Cálculo de la asistencia en la semana
     public Integer totalAsistenciaPorSemana(Integer id_grupo, ArrayList<String> fechas) throws SQLException {
         
         ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
         
+        Integer asistencias = 0;
+        
         while (rs.next()) {
             
+            for (String f : fechas) {
+                
+                if (rs.getString("FECHA").equals(f)) {
+                    
+                    if (rs.getInt("ASISTENCIA") == 1 || rs.getInt("ASISTENCIA") == 3) {
+                        asistencias ++;
+                    }
+                    
+                }
+                
+            }
             
             
         }
         
-        return null;
+        return asistencias;
         
     }
     
+    // Cálculo de la inasistencia en la semana
     public Integer totalInasistenciaPorSemana(Integer id_grupo, ArrayList<String> fechas) throws SQLException {
         
         ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
@@ -842,6 +877,87 @@ public class Querys extends MasterDatabase {
         }
         
         return inasistencias;
+        
+    }
+    
+    // Obtener las estadísticas del alumno por semana
+    public ArrayList<Integer> getAsistenciaPorAlumnoByFecha(Integer id_grupo, Integer id_alumno, ArrayList<String> fechas) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' AND ALUMNO_ID = '"+id_alumno+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
+        
+        ArrayList<Integer> assist = new ArrayList<Integer>();
+        
+        assist.add(0, 0);
+        assist.add(1, 0);
+        assist.add(2, 0);
+
+        while (rs.next()) {
+
+           for (String f : fechas) {
+
+                if (f.equals(rs.getString("FECHA"))) {
+                    
+                    switch (rs.getInt("ASISTENCIA")) {
+                        case 1:
+                            assist.set(0, assist.get(0) + 1);
+                            break;
+                        case 2:
+                            assist.set(1, assist.get(1) + 1);
+                            break;
+                        case 3:
+                            assist.set(2, assist.get(2) + 1);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+           
+        }
+        
+        return assist;
+        
+    }
+    
+    // Obtener las estadísticas del alumno por mes
+    public ArrayList<Integer> getAsistenciaPorAlumnoByMes(Integer id_grupo, Integer id_alumno, String fecha) throws SQLException {
+        
+        String mes = Character.toString(fecha.charAt(3)) + Character.toString(fecha.charAt(4));
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' AND ALUMNO_ID = '"+id_alumno+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
+        
+        ArrayList<Integer> assist = new ArrayList<Integer>();
+        
+        assist.add(0, 0);
+        assist.add(1, 0);
+        assist.add(2, 0);
+
+        while (rs.next()) {
+            
+            String fechaDB = rs.getString("FECHA");
+            String mesDB = Character.toString(fechaDB.charAt(3)) + Character.toString(fechaDB.charAt(4));
+
+            if (mesDB.equals(mes)) {
+
+                switch (rs.getInt("ASISTENCIA")) {
+                    case 1:
+                        assist.set(0, assist.get(0) + 1);
+                        break;
+                    case 2:
+                        assist.set(1, assist.get(1) + 1);
+                        break;
+                    case 3:
+                        assist.set(2, assist.get(2) + 1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+           
+        }
+        
+        return assist;
         
     }
     
@@ -879,6 +995,8 @@ public class Querys extends MasterDatabase {
         return list;
         
     }
+    
+    
     
     // Método para restar dias a una fecha dada
     private String restarDias(String fecha, Integer cantidad) throws ParseException {

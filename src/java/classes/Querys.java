@@ -8,17 +8,28 @@ package classes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+
 
 /**
  *
  * @author Jeremías
  */
 public class Querys extends MasterDatabase {
+    
+    private Integer NUM_DEC = 2;
    
     // Retorna una lista con el nombre de los grupos que administra una cuenta
     public ArrayList<String> getNombreGruposQueAdministra(int cuenta_id) throws SQLException {
@@ -72,7 +83,6 @@ public class Querys extends MasterDatabase {
         
     }
     
-    
     // Retorna el nombre del grupo por la ID dada
     private String getGrupoById(int grupo_id) throws SQLException {
         
@@ -122,6 +132,7 @@ public class Querys extends MasterDatabase {
         
     }
      
+    // Método para obtener favoritos
     public String getFavoritos(String usuario) {
         return null;
     }
@@ -576,18 +587,21 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Guarda un usuario activo
     public void setActiveAccount(Integer id_user, String username) throws SQLException {
         
         super.guardar("INSERT INTO ACTIVE_USER(USER_ID, NAME) VALUES('"+id_user+"', '"+username+"')");
         
     }
     
+    // Elimina un usuario activo
     public void deleteActiveAccount(Integer id_user) throws SQLException {
         
         super.guardar("DELETE FROM ACTIVE_USER WHERE USER_ID='"+id_user+"'");
         
     }
     
+    // Verifica si está activo el usuario
     public boolean isActiveAccount(String username) throws SQLException {
         
         ResultSet rs = super.consultar("SELECT * FROM ACTIVE_USER WHERE NAME = '"+username+"'");
@@ -602,12 +616,14 @@ public class Querys extends MasterDatabase {
         
     }
     
+    // Modifica la asistencia
     public void modificarAsistencia(Integer id_alumno, Integer asistencia, Integer id_grupo, String fecha, Integer id_cuenta) throws SQLException {
             
         super.guardar("UPDATE ASISTENCIA SET ASISTENCIA = '"+asistencia+"', CUENTA_ID = '"+id_cuenta+"' WHERE GRUPO_ID = '"+id_grupo+"' AND ALUMNO_ID = '"+id_alumno+"' AND FECHA = '"+fecha+"'");
             
     }
     
+    // Obtengo la fecha en la que se tomó lista por última vez
     public String getUltimaTomaAsistencia(Integer id_grupo) throws SQLException {
         
         ResultSet rs = super.consultar("SELECT FECHA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA_ID DESC LIMIT 1");
@@ -619,6 +635,282 @@ public class Querys extends MasterDatabase {
         }
         
         return ret;
+    }
+    
+    
+    /* Consultas de estadísticas */
+    
+    // Total de alumnos en un grupo
+    private Integer getTotalAlumnosEnGrupo(Integer id_grupo) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT ALUMNO_ID FROM GRUPO_ALUMNO WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        Integer cantAlumnos = 0;
+        
+        while (rs.next()) {
+            cantAlumnos ++;
+        }
+        
+        return cantAlumnos;
+        
+    }
+    
+     // Total de de presentes en un grupo por mes
+    private Integer getTotalPresentesEnGrupo(Integer id_grupo, String mes) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        Integer cantPresentes = 0;
+        
+        // Una bandera para saber si se accedió al mes
+        boolean flag = false;
+        
+        while (rs.next()) {
+            
+            String fecha = rs.getString("FECHA");
+            
+            String month = Character.toString(fecha.charAt(3)) + Character.toString(fecha.charAt(4));
+            
+            if (rs.getInt("ASISTENCIA") == 1 || rs.getInt("ASISTENCIA") == 3) {
+                
+                if (month.equals(mes)) {
+                    cantPresentes ++;
+                    // Una vez que recorremos el mes, ya no va a volver a aparecer
+                    flag = true;
+                }
+                // Si ya se recorrió el mes, no hay porqué seguir
+                else if (flag) {
+                    break;
+                }
+            }
+        }
+        
+        return cantPresentes;
+        
+    }
+    
+    // Total de de ausentes en un grupo por mes
+    private Integer getTotalAusentesEnGrupo(Integer id_grupo, String mes) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
+        
+        Integer cantAusentes = 0;
+        
+        // Una bandera para saber si se accedió al mes
+        boolean flag = false;
+        
+        while (rs.next()) {
+            
+            String fecha = rs.getString("FECHA");
+            
+            String month = Character.toString(fecha.charAt(3)) + Character.toString(fecha.charAt(4));
+            
+            if (rs.getInt("ASISTENCIA") == 2) {
+                
+                if (month.equals(mes)) {
+                    cantAusentes ++;
+                    // Una vez que recorremos el mes, ya no va a volver a aparecer
+                    flag = true;
+                }
+                // Si ya se recorrió el mes, no hay porqué seguir
+                else if (flag) {
+                    break;
+                }
+                
+            }
+        }
+        
+        return cantAusentes;
+        
+    }
+    
+    // Días hábiles de un mes determinado
+    private Integer getDiasHabiles(Integer id_grupo, String mes) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"'");
+        
+        Integer diasHabiles = 0;
+        
+        // Una bandera para saber si se accedió al mes
+        boolean flag = false;
+        
+        String dayAux = "";
+        
+        while (rs.next()) {
+            
+            String fecha = rs.getString("FECHA");
+            
+            String day = Character.toString(fecha.charAt(0)) + Character.toString(fecha.charAt(1));
+            String month = Character.toString(fecha.charAt(3)) + Character.toString(fecha.charAt(4));
+            
+            if (month.equals(mes)) {
+                
+                if (!day.equals(dayAux)) {
+                    diasHabiles ++;
+                    dayAux = day;
+                    // Una vez que recorremos el mes, ya no va a volver a aparecer
+                    flag = true;
+                }
+            }
+            // Si ya se recorrió el mes, no hay porqué seguir
+            else if (flag) {
+                break;
+            }
+        }
+        
+        return diasHabiles;
+        
+    }
+    
+    // Método que retorna el porcentaje de asistencia
+    public double getPorcentajeDeAsistencia(Integer id_grupo, String date) throws SQLException {
+        
+        String mes = Character.toString(date.charAt(3)) + Character.toString(date.charAt(4));
+        
+        double totalPresentes = getTotalPresentesEnGrupo(id_grupo, mes);
+        double totalAusentes = getTotalAusentesEnGrupo(id_grupo, mes);
+        
+        double porcentajeAsistencia = Maths.redondearDecimales((totalPresentes * 100) / (totalPresentes + totalAusentes), NUM_DEC);
+        
+        return porcentajeAsistencia;
+        
+    }
+    
+    // Método que retorna el porcentaje de inasistencia
+    public double getPorcentajeDeInasistencia(Integer id_grupo, String date) throws SQLException {
+        
+        String mes = Character.toString(date.charAt(3)) + Character.toString(date.charAt(4));
+        
+        double totalPresentes = getTotalPresentesEnGrupo(id_grupo, mes);
+        double totalAusentes = getTotalAusentesEnGrupo(id_grupo, mes);
+        
+        double porcentajeInasistencia = Maths.redondearDecimales((totalAusentes * 100) / (totalPresentes + totalAusentes), NUM_DEC);
+        
+        return porcentajeInasistencia;
+        
+    }
+    
+    // Cálculo de la media de asistencia por mes
+    public double getMediaDeAsistencia(Integer id_grupo, String date) throws SQLException {
+        
+        String mes = Character.toString(date.charAt(3)) + Character.toString(date.charAt(4));
+        
+        double totalPresentes = getTotalPresentesEnGrupo(id_grupo, mes);
+        double diasHabiles = getDiasHabiles(id_grupo, mes);
+        
+        double mediaAsistencia = Maths.redondearDecimales(totalPresentes / diasHabiles, NUM_DEC);
+        
+        return mediaAsistencia;
+        
+    }
+    
+    public Integer totalAsistenciaPorSemana(Integer id_grupo, ArrayList<String> fechas) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
+        
+        while (rs.next()) {
+            
+            
+            
+        }
+        
+        return null;
+        
+    }
+    
+    public Integer totalInasistenciaPorSemana(Integer id_grupo, ArrayList<String> fechas) throws SQLException {
+        
+        ResultSet rs = super.consultar("SELECT FECHA, ASISTENCIA FROM ASISTENCIA WHERE GRUPO_ID = '"+id_grupo+"' ORDER BY ASISTENCIA.ASISTENCIA_ID DESC");
+        
+        Integer inasistencias = 0;
+        
+        while (rs.next()) {
+            
+            for (String f : fechas) {
+                
+                if (rs.getString("FECHA").equals(f)) {
+                    
+                    if (rs.getInt("ASISTENCIA") == 2) {
+                        inasistencias ++;
+                    }
+                    
+                }
+                
+            }
+            
+            
+        }
+        
+        return inasistencias;
+        
+    }
+    
+    // A partir de una fecha obtengo las fechas de los dias hábiles de esa semana
+    public ArrayList<String> getDiasDeSemanaByFecha(String fecha) throws ParseException {
+        
+        ArrayList<String> list = new ArrayList<String>();
+        
+        String auxFecha = fecha;
+        
+        // Busco el lunes de la semana
+        while (true) {
+            
+            if (getDayName(auxFecha).equals("Monday")) {
+                
+                for (int i = 0; i < 5; i++) {
+                    
+                    list.add(i, auxFecha);
+                    
+                    auxFecha = sumarDias(auxFecha, 1);
+                    
+                }
+                
+                break;
+                
+            }
+            else {
+                
+                auxFecha = restarDias(auxFecha, 1);
+                
+            }
+            
+        }
+        
+        return list;
+        
+    }
+    
+    // Método para restar dias a una fecha dada
+    private String restarDias(String fecha, Integer cantidad) throws ParseException {
+
+        DateTime dateTime = DateTime.parse(fecha, DateTimeFormat.forPattern("dd-MM-yyyy"));
+        
+        dateTime = dateTime.minusDays(cantidad);
+        
+        return dateTime.toString("dd-MM-yyyy");
+        
+    }
+    
+    // Método para sumar dias a una fecha dada
+    private String sumarDias(String fecha, Integer cantidad) throws ParseException {
+
+        DateTime dateTime = DateTime.parse(fecha, DateTimeFormat.forPattern("dd-MM-yyyy"));
+        
+        dateTime = dateTime.plusDays(cantidad);
+        
+        return dateTime.toString("dd-MM-yyyy");
+        
+    }
+    
+    // Método para obtener el nombre del día
+    private static String getDayName(String fecha) throws ParseException{
+        
+        Date date = new SimpleDateFormat("d-M-yyyy").parse(fecha);
+        
+        String dayName = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date);
+        
+        return dayName;
+        
     }
     
 }

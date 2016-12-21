@@ -30,18 +30,18 @@ import org.json.JSONObject;
 public class EstadisticasAlumnoService extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         
         Querys db = new Querys();
         
         PrintWriter out = response.getWriter();
         
-        //Integer idGrupo = Integer.parseInt(request.getParameter("id_grupo"));
-        //String fecha = request.getParameter("fecha");
+        Integer idGrupo = Integer.parseInt(request.getParameter("id_grupo"));
+        String fecha = request.getParameter("fecha");
         
-        Integer idGrupo = 2;
-        String fecha = "30-11-2016";
+        //Integer idGrupo = 2;
+        //String fecha = "30-11-2016";
         
         String res = null;
         
